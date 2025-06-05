@@ -33,6 +33,13 @@ h1 {
     align-items: center;
 }
 
+.hand-card {
+    width: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .card-title {
     font-weight: bold;
     margin-bottom: 4px;
@@ -64,4 +71,26 @@ button {
 button:disabled {
     background: #888;
     cursor: default;
+}
+
+#gameArea {
+    margin-top: 20px;
+}
+
+#info, #aiInfo {
+    display: inline-block;
+    margin: 0.5em;
+    padding: 0.5em 1em;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+#handArea, #market {
+    margin-top: 1em;
+}
+
+#message {
+    font-weight: bold;
+    margin-top: 1em;
 }
