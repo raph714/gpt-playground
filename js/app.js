@@ -33,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let coins = 0;
     let turn = 0;
     let round = 1;
-    let bought = false;
     const selectedCards = new Set();
 
     // AI state
@@ -180,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const btn = document.createElement('button');
             btn.textContent = 'Buy';
-            btn.addEventListener('click', () => buyCard(name));
+            btn.addEventListener('click', () => buyCard(name, card));
 
             card.appendChild(title);
             card.appendChild(desc);
@@ -196,7 +195,6 @@ document.addEventListener('DOMContentLoaded', () => {
         hand = [];
         coins = 0;
         turn = 1;
-        bought = false;
         selectedCards.clear();
         aiDeck = [];
         aiDiscard = [];
@@ -221,11 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
         checkWin();
     }
 
-    function buyCard(name) {
-        if (bought) {
-            message.textContent = 'You already bought a card this turn.';
-            return;
-        }
+    function buyCard(name, marketEl) {
         const cost = cardData[name].cost;
         const available = getSelectedCoinTotal();
         if (available < cost) {
@@ -245,7 +239,10 @@ document.addEventListener('DOMContentLoaded', () => {
             discard.push(name);
             selectedCards.clear();
             countCoins();
-            bought = true;
+            if (marketEl) {
+                marketEl.classList.add('purchased');
+                setTimeout(() => marketEl.remove(), 300);
+            }
             message.textContent = `Bought ${name}!`;
             updateDisplay();
             checkWin();
@@ -286,7 +283,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function endTurn() {
         discard = discard.concat(hand);
         hand = [];
-        bought = false;
         selectedCards.clear();
         draw(5);
         countCoins();
