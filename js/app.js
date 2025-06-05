@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let turn = 0;
     let round = 1;
     let bought = false;
+    const selectedCards = new Set();
 
     // AI state
     let aiDeck = [];
@@ -103,6 +104,27 @@ document.addEventListener('DOMContentLoaded', () => {
         return arr.reduce((sum, c) => sum + (cardData[c].vp || 0), 0);
     }
 
+    function getSelectedCoinTotal() {
+        let total = 0;
+        selectedCards.forEach(i => {
+            const cardName = hand[i];
+            total += cardData[cardName].coins || 0;
+        });
+        return total;
+    }
+
+    function toggleCardSelection(index) {
+        if (selectedCards.has(index)) {
+            selectedCards.delete(index);
+        } else {
+            selectedCards.add(index);
+        }
+        const el = handDiv.querySelector(`.hand-card[data-index='${index}']`);
+        if (el) {
+            el.classList.toggle('selected');
+        }
+    }
+
     function updateDisplay() {
         deckCount.textContent = deck.length;
         discardCount.textContent = discard.length;
@@ -110,9 +132,12 @@ document.addEventListener('DOMContentLoaded', () => {
         turnNumber.textContent = turn;
         roundNumber.textContent = round;
         handDiv.innerHTML = '';
-        hand.forEach(c => {
+        hand.forEach((c, idx) => {
             const card = document.createElement('div');
-            card.className = 'card hand-card';
+            card.className = 'card hand-card selectable';
+            card.dataset.index = idx;
+            if (selectedCards.has(idx)) card.classList.add('selected');
+            card.addEventListener('click', () => toggleCardSelection(idx));
 
             const title = document.createElement('div');
             title.className = 'card-title';
@@ -172,6 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
         coins = 0;
         turn = 1;
         bought = false;
+        selectedCards.clear();
         aiDeck = [];
         aiDiscard = [];
         aiHand = [];
@@ -201,16 +227,29 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         const cost = cardData[name].cost;
-        if (coins < cost) {
-            message.textContent = 'Not enough coins.';
+        const available = getSelectedCoinTotal();
+        if (available < cost) {
+            message.textContent = 'Not enough selected coins.';
             return;
         }
-        coins -= cost;
-        discard.push(name);
-        bought = true;
-        message.textContent = `Bought ${name}!`;
-        updateDisplay();
-        checkWin();
+
+        const elems = Array.from(selectedCards).map(i =>
+            handDiv.querySelector(`.hand-card[data-index='${i}']`)
+        ).filter(Boolean);
+        elems.forEach(el => el.classList.add('spent'));
+
+        setTimeout(() => {
+            Array.from(selectedCards).sort((a,b) => b-a).forEach(i => {
+                discard.push(hand.splice(i, 1)[0]);
+            });
+            discard.push(name);
+            selectedCards.clear();
+            countCoins();
+            bought = true;
+            message.textContent = `Bought ${name}!`;
+            updateDisplay();
+            checkWin();
+        }, 300);
     }
 
     function aiTurn() {
@@ -248,6 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
         discard = discard.concat(hand);
         hand = [];
         bought = false;
+        selectedCards.clear();
         draw(5);
         countCoins();
         const aiMsg = aiTurn();
