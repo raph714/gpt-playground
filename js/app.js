@@ -1,10 +1,30 @@
 document.addEventListener('DOMContentLoaded', () => {
     const cardData = {
-        Copper: { cost: 0, coins: 1 },
-        Silver: { cost: 3, coins: 2 },
-        Gold: { cost: 6, coins: 3 },
-        Estate: { cost: 2, vp: 1 },
-        Province: { cost: 8, vp: 6 }
+        Copper: {
+            cost: 0,
+            coins: 1,
+            description: 'Basic currency worth 1 coin.'
+        },
+        Silver: {
+            cost: 3,
+            coins: 2,
+            description: 'Provides 2 coins.'
+        },
+        Gold: {
+            cost: 6,
+            coins: 3,
+            description: 'Provides 3 coins.'
+        },
+        Estate: {
+            cost: 2,
+            vp: 1,
+            description: 'Worth 1 victory point.'
+        },
+        Province: {
+            cost: 8,
+            vp: 6,
+            description: 'Worth 6 victory points.'
+        }
     };
 
     let deck = [];
@@ -94,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const div = document.createElement('div');
             div.className = 'card';
             div.textContent = c;
+            div.title = cardData[c].description;
             handDiv.appendChild(div);
         });
         aiDeckCount.textContent = aiDeck.length;
@@ -107,10 +128,30 @@ document.addEventListener('DOMContentLoaded', () => {
         marketDiv.innerHTML = '';
         Object.keys(cardData).forEach(name => {
             const data = cardData[name];
+            const card = document.createElement('div');
+            card.className = 'card market-card';
+
+            const title = document.createElement('div');
+            title.className = 'card-title';
+            title.textContent = name;
+
+            const desc = document.createElement('div');
+            desc.className = 'card-desc';
+            desc.textContent = data.description;
+
+            const cost = document.createElement('div');
+            cost.className = 'card-cost';
+            cost.textContent = `Cost: ${data.cost}`;
+
             const btn = document.createElement('button');
-            btn.textContent = `Buy ${name} (${data.cost})`;
+            btn.textContent = 'Buy';
             btn.addEventListener('click', () => buyCard(name));
-            marketDiv.appendChild(btn);
+
+            card.appendChild(title);
+            card.appendChild(desc);
+            card.appendChild(cost);
+            card.appendChild(btn);
+            marketDiv.appendChild(card);
         });
     }
 
