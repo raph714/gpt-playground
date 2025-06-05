@@ -19,5 +19,6 @@ the site from the URL reported in the workflow logs.
 
 ## Updates
 
-- Card descriptions appear in the market and on hover in your hand.
-- Refreshed visuals with cleaner card layout and styled buttons.
+- Card descriptions appear in the market and directly on cards in your hand.
+- Refreshed visuals with cleaner card layout, styled buttons, and highlighted
+  game info boxes.

@@ -111,11 +111,21 @@ document.addEventListener('DOMContentLoaded', () => {
         roundNumber.textContent = round;
         handDiv.innerHTML = '';
         hand.forEach(c => {
-            const div = document.createElement('div');
-            div.className = 'card';
-            div.textContent = c;
-            div.title = cardData[c].description;
-            handDiv.appendChild(div);
+            const card = document.createElement('div');
+            card.className = 'card hand-card';
+
+            const title = document.createElement('div');
+            title.className = 'card-title';
+            title.textContent = c;
+
+            const desc = document.createElement('div');
+            desc.className = 'card-desc';
+            desc.textContent = cardData[c].description;
+
+            card.title = cardData[c].description;
+            card.appendChild(title);
+            card.appendChild(desc);
+            handDiv.appendChild(card);
         });
         aiDeckCount.textContent = aiDeck.length;
         aiDiscardCount.textContent = aiDiscard.length;
