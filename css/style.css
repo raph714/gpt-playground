@@ -3,6 +3,7 @@ body {
     margin: 0;
     padding: 0;
     text-align: center;
+    background: #fafafa;
 }
 
 h1 {
@@ -18,9 +19,32 @@ h1 {
 
 .card {
     border: 1px solid #333;
-    padding: 5px 10px;
+    padding: 8px 10px;
     margin: 5px;
-    background: #f5f5f5;
+    background: linear-gradient(#ffffff, #e0e0e0);
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.market-card {
+    width: 160px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card-title {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.card-desc {
+    font-size: 0.9em;
+    margin-bottom: 4px;
+}
+
+.card-cost {
+    margin-bottom: 4px;
 }
 
 .hidden {
@@ -29,4 +53,15 @@ h1 {
 
 button {
     margin: 5px;
+    padding: 6px 10px;
+    border: none;
+    background: #4caf50;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:disabled {
+    background: #888;
+    cursor: default;
 }
