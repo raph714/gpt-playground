@@ -103,6 +103,25 @@ document.addEventListener('DOMContentLoaded', () => {
         return arr.reduce((sum, c) => sum + (cardData[c].vp || 0), 0);
     }
 
+    function createCardElement(name) {
+        const data = cardData[name];
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        const title = document.createElement('div');
+        title.className = 'card-title';
+        title.textContent = name;
+
+        const desc = document.createElement('div');
+        desc.className = 'card-desc';
+        desc.textContent = data.description;
+
+        card.title = data.description;
+        card.appendChild(title);
+        card.appendChild(desc);
+        return card;
+    }
+
     function getSelectedCoinTotal() {
         let total = 0;
         selectedCards.forEach(i => {
@@ -132,23 +151,11 @@ document.addEventListener('DOMContentLoaded', () => {
         roundNumber.textContent = round;
         handDiv.innerHTML = '';
         hand.forEach((c, idx) => {
-            const card = document.createElement('div');
-            card.className = 'card hand-card selectable';
+            const card = createCardElement(c);
+            card.classList.add('hand-card', 'selectable');
             card.dataset.index = idx;
             if (selectedCards.has(idx)) card.classList.add('selected');
             card.addEventListener('click', () => toggleCardSelection(idx));
-
-            const title = document.createElement('div');
-            title.className = 'card-title';
-            title.textContent = c;
-
-            const desc = document.createElement('div');
-            desc.className = 'card-desc';
-            desc.textContent = cardData[c].description;
-
-            card.title = cardData[c].description;
-            card.appendChild(title);
-            card.appendChild(desc);
             handDiv.appendChild(card);
         });
         aiDeckCount.textContent = aiDeck.length;
@@ -162,16 +169,8 @@ document.addEventListener('DOMContentLoaded', () => {
         marketDiv.innerHTML = '';
         Object.keys(cardData).forEach(name => {
             const data = cardData[name];
-            const card = document.createElement('div');
-            card.className = 'card market-card';
-
-            const title = document.createElement('div');
-            title.className = 'card-title';
-            title.textContent = name;
-
-            const desc = document.createElement('div');
-            desc.className = 'card-desc';
-            desc.textContent = data.description;
+            const card = createCardElement(name);
+            card.classList.add('market-card');
 
             const cost = document.createElement('div');
             cost.className = 'card-cost';
@@ -181,8 +180,6 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.textContent = 'Buy';
             btn.addEventListener('click', () => buyCard(name, card));
 
-            card.appendChild(title);
-            card.appendChild(desc);
             card.appendChild(cost);
             card.appendChild(btn);
             marketDiv.appendChild(card);
