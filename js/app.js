@@ -169,8 +169,11 @@ document.addEventListener('DOMContentLoaded', () => {
         marketDiv.innerHTML = '';
         Object.keys(cardData).forEach(name => {
             const data = cardData[name];
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'market-card';
+
             const card = createCardElement(name);
-            card.classList.add('market-card');
 
             const cost = document.createElement('div');
             cost.className = 'card-cost';
@@ -178,11 +181,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const btn = document.createElement('button');
             btn.textContent = 'Buy';
-            btn.addEventListener('click', () => buyCard(name, card));
+            btn.addEventListener('click', () => buyCard(name, wrapper));
 
-            card.appendChild(cost);
-            card.appendChild(btn);
-            marketDiv.appendChild(card);
+            wrapper.appendChild(card);
+            wrapper.appendChild(cost);
+            wrapper.appendChild(btn);
+            marketDiv.appendChild(wrapper);
         });
     }
 

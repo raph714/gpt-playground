@@ -36,6 +36,19 @@ h1 {
     /* Classes kept for future extension */
 }
 
+/* wrapper around market cards to hold controls */
+.market-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 5px;
+}
+
+/* remove extra margin on cards inside wrapper */
+.market-card .card {
+    margin: 0 0 4px 0;
+}
+
 .selectable {
     cursor: pointer;
 }
