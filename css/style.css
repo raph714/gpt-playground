@@ -39,9 +39,22 @@ h1 {
     margin-bottom: 4px;
 }
 
+
 .market-card,
 .hand-card {
-    /* Classes kept for future extension */
+    /* wrapper styles */
+}
+
+.hand-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 5px;
+    width: 150px;
+}
+
+.hand-card .card {
+    margin: 0 0 4px 0;
 }
 
 /* wrapper around market cards to hold controls */
