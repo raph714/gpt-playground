@@ -30,8 +30,13 @@ h1 {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
+}
+
+.card-art {
+    font-size: 2.5em;
+    margin-bottom: 4px;
 }
 
 .market-card,
