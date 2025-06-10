@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
             description: 'Shiny coin worth 2 coins.'
         },
         Gold: {
-            cost: 7,
+            cost: 6,
             coins: 3,
             emoji: '🥇',
             description: 'Premium coin worth 3 coins.'
@@ -24,25 +24,311 @@ document.addEventListener('DOMContentLoaded', () => {
             emoji: '🏠',
             description: 'Worth 1 victory point.'
         },
+        Duchy: {
+            cost: 5,
+            vp: 3,
+            emoji: '🏯',
+            description: 'Worth 3 victory points.'
+        },
         Province: {
-            cost: 8,
+            cost: 9,
             vp: 6,
             emoji: '🏰',
             description: 'Worth 6 victory points.'
         },
         Jester: {
-            cost: 4,
-            coins: 2,
+            cost: 5,
+            coins: 1,
             vp: 1,
             emoji: '🤹',
             description: 'Adds comic relief and 1 VP.'
         },
         Village: {
-            cost: 3,
+            cost: 4,
             coins: 1,
             extraDraw: 1,
             emoji: '🏘️',
             description: 'Draw an extra card each turn.'
+        },
+        Militia: {
+            cost: 4,
+            coins: 2,
+            attack: 1,
+            emoji: '⚔️',
+            description: "Reduces opponent's coins by 1 when in hand."
+        },
+        Squire: {
+            cost: 3,
+            coins: 1,
+            defense: 1,
+            emoji: '🛡️',
+            description: 'Young warrior providing 1 defense.'
+        },
+        Knight: {
+            cost: 6,
+            coins: 1,
+            attack: 2,
+            defense: 1,
+            emoji: '🗡️',
+            description: 'Seasoned fighter with 2 attack and 1 defense.'
+        },
+        Archer: {
+            cost: 4,
+            attack: 1,
+            extraDraw: 1,
+            emoji: '🏹',
+            description: 'Ranged unit drawing a card when played.'
+        },
+        SiegeTower: {
+            cost: 7,
+            attack: 2,
+            emoji: '🪜',
+            description: 'Large engine bringing 2 attack.'
+        },
+        Castle: {
+            cost: 8,
+            vp: 4,
+            defense: 2,
+            emoji: '🏰',
+            description: 'Stronghold worth 4 VP and 2 defense.'
+        },
+        Guard: {
+            cost: 3,
+            coins: 1,
+            defense: 1,
+            emoji: '🛡️',
+            description: 'Basic protection adding 1 defense.'
+        },
+        Moat: {
+            cost: 2,
+            defense: 2,
+            emoji: '🌊',
+            description: 'Flooded ditch adding 2 defense.'
+        },
+        Market: {
+            cost: 5,
+            coins: 2,
+            extraDraw: 1,
+            emoji: '🏪',
+            description: 'Trade hub generating coins and an extra draw.'
+        },
+        Barracks: {
+            cost: 4,
+            extraDraw: 1,
+            defense: 1,
+            emoji: '🏟️',
+            description: 'Training ground granting 1 defense and draw.'
+        },
+        Blacksmith: {
+            cost: 4,
+            coins: 1,
+            attack: 1,
+            emoji: '⚒️',
+            description: 'Forge increasing attack and coins.'
+        },
+        Chapel: {
+            cost: 3,
+            vp: 1,
+            defense: 1,
+            emoji: '⛪',
+            description: 'Place of worship offering 1 VP and defense.'
+        },
+        Stable: {
+            cost: 5,
+            coins: 2,
+            extraDraw: 1,
+            emoji: '🐴',
+            description: 'Stabling horses for coins and a draw.'
+        },
+        Infantry: {
+            cost: 3,
+            attack: 1,
+            defense: 1,
+            emoji: '🪓',
+            description: 'Foot soldier with balanced attack and defense.'
+        },
+        Catapult: {
+            cost: 6,
+            attack: 3,
+            emoji: '🪨',
+            description: 'Siege engine adding 3 attack.'
+        },
+        Trebuchet: {
+            cost: 7,
+            attack: 3,
+            defense: 1,
+            emoji: '🎯',
+            description: 'Powerful launcher with attack and defense.'
+        },
+        Merchant: {
+            cost: 4,
+            coins: 2,
+            emoji: '🛍️',
+            description: 'Travelling trader worth 2 coins.'
+        },
+        Farmer: {
+            cost: 2,
+            coins: 1,
+            defense: 1,
+            emoji: '🌾',
+            description: 'Provides food and minor defense.'
+        },
+        Baker: {
+            cost: 3,
+            coins: 1,
+            extraDraw: 1,
+            emoji: '🥖',
+            description: 'Supplies bread and 1 extra draw.'
+        },
+        Tavern: {
+            cost: 4,
+            coins: 2,
+            emoji: '🍻',
+            description: 'Gathering place yielding 2 coins.'
+        },
+        Inn: {
+            cost: 3,
+            coins: 1,
+            extraDraw: 1,
+            emoji: '🏨',
+            description: 'Resting spot for coins and a draw.'
+        },
+        Mill: {
+            cost: 4,
+            coins: 2,
+            emoji: '🌽',
+            description: 'Processes grain for 2 coins.'
+        },
+        Priest: {
+            cost: 5,
+            defense: 2,
+            vp: 1,
+            emoji: '🙏',
+            description: 'Holy man granting defense and VP.'
+        },
+        Wizard: {
+            cost: 6,
+            attack: 2,
+            extraDraw: 1,
+            emoji: '🧙',
+            description: 'Caster with attack and a draw.'
+        },
+        Alchemist: {
+            cost: 6,
+            coins: 2,
+            extraDraw: 1,
+            emoji: '⚗️',
+            description: 'Mystic who turns lead into coins and a draw.'
+        },
+        Court: {
+            cost: 5,
+            coins: 1,
+            vp: 2,
+            extraDraw: 1,
+            emoji: '🏛️',
+            description: 'Seat of power granting VP and draw.'
+        },
+        Throne: {
+            cost: 7,
+            vp: 3,
+            defense: 1,
+            emoji: '👑',
+            description: 'Symbol of rule adding VP and defense.'
+        },
+        Guardhouse: {
+            cost: 4,
+            defense: 2,
+            emoji: '🏰',
+            description: 'Fortified structure with 2 defense.'
+        },
+        Tower: {
+            cost: 6,
+            defense: 3,
+            emoji: '🗼',
+            description: 'Watchtower providing 3 defense.'
+        },
+        Wall: {
+            cost: 5,
+            defense: 3,
+            emoji: '🧱',
+            description: 'Sturdy wall worth 3 defense.'
+        },
+        Hospital: {
+            cost: 4,
+            defense: 1,
+            extraDraw: 1,
+            emoji: '🏥',
+            description: 'Heals troops and draws a card.'
+        },
+        TrainingGrounds: {
+            cost: 5,
+            attack: 1,
+            extraDraw: 1,
+            emoji: '🥋',
+            description: 'Prepares warriors with attack and draw.'
+        },
+        Mine: {
+            cost: 5,
+            coins: 2,
+            emoji: '⛏️',
+            description: 'Source of ore worth 2 coins.'
+        },
+        Quarry: {
+            cost: 4,
+            coins: 1,
+            defense: 1,
+            emoji: '🪨',
+            description: 'Stone works giving coins and defense.'
+        },
+        Explorer: {
+            cost: 4,
+            extraDraw: 2,
+            emoji: '🧭',
+            description: 'Ventures forth drawing extra cards.'
+        },
+        Ranger: {
+            cost: 5,
+            attack: 1,
+            extraDraw: 1,
+            emoji: '🏕️',
+            description: 'Watches the wilds with attack and draw.'
+        },
+        Scout: {
+            cost: 3,
+            extraDraw: 1,
+            emoji: '🕵️',
+            description: 'Provides reconnaissance and a draw.'
+        },
+        Trader: {
+            cost: 4,
+            coins: 2,
+            emoji: '💰',
+            description: 'Commercial expert worth 2 coins.'
+        },
+        Scholar: {
+            cost: 3,
+            extraDraw: 2,
+            emoji: '📚',
+            description: 'Learned figure drawing two cards.'
+        },
+        Library: {
+            cost: 6,
+            vp: 2,
+            extraDraw: 2,
+            emoji: '📖',
+            description: 'Repository of knowledge worth VP and draws.'
+        },
+        Swordsman: {
+            cost: 5,
+            attack: 2,
+            emoji: '🗡️',
+            description: 'Skilled attacker with 2 attack.'
+        },
+        Ballista: {
+            cost: 7,
+            attack: 4,
+            emoji: '🎯',
+            description: 'Deadly siege weapon with 4 attack.'
         }
     };
 
@@ -137,10 +423,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function countCoins() {
         coins = hand.reduce((sum, card) => sum + (cardData[card].coins || 0), 0);
+        const attack = aiHand.reduce((sum, card) => sum + (cardData[card].attack || 0), 0);
+        const defense = hand.reduce((sum, card) => sum + (cardData[card].defense || 0), 0);
+        coins = Math.max(0, coins - Math.max(0, attack - defense));
     }
 
     function countAiCoins() {
         aiCoins = aiHand.reduce((sum, card) => sum + (cardData[card].coins || 0), 0);
+        const attack = hand.reduce((sum, card) => sum + (cardData[card].attack || 0), 0);
+        const defense = aiHand.reduce((sum, card) => sum + (cardData[card].defense || 0), 0);
+        aiCoins = Math.max(0, aiCoins - Math.max(0, attack - defense));
     }
 
     function calculateVP(arr) {
@@ -148,11 +440,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function createMarketDeck() {
-        marketDeck = [];
-        const names = Object.keys(cardData);
-        for (let i = 0; i < 20; i++) {
-            marketDeck.push(names[Math.floor(Math.random() * names.length)]);
-        }
+        marketDeck = Object.keys(cardData);
         shuffle(marketDeck);
     }
 
@@ -277,6 +565,7 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 0; i < 7; i++) aiDeck.push('Copper');
         for (let i = 0; i < 3; i++) aiDeck.push('Estate');
         for (let i = 0; i < round - 1; i++) aiDeck.push('Silver');
+        for (let i = 0; i < Math.floor(round / 2); i++) aiDeck.push('Militia');
         shuffle(deck);
         shuffle(aiDeck);
         draw(5);
@@ -370,6 +659,7 @@ document.addEventListener('DOMContentLoaded', () => {
         applyExtraDraw();
         countCoins();
         const aiMsg = aiTurn();
+        setupMarket();
         turn++;
         updateDisplay();
         message.textContent = aiMsg;
