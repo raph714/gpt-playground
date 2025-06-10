@@ -1,343 +1,14 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const cardData = {
-        Copper: {
-            cost: 0,
-            coins: 1,
-            emoji: '🪙',
-            description: 'Basic currency worth 1 coin.'
-        },
-        Silver: {
-            cost: 3,
-            coins: 2,
-            emoji: '🥈',
-            description: 'Shiny coin worth 2 coins.'
-        },
-        Gold: {
-            cost: 6,
-            coins: 3,
-            emoji: '🥇',
-            description: 'Premium coin worth 3 coins.'
-        },
-        Estate: {
-            cost: 2,
-            vp: 1,
-            emoji: '🏠',
-            description: 'Worth 1 victory point.'
-        },
-        Duchy: {
-            cost: 5,
-            vp: 3,
-            emoji: '🏯',
-            description: 'Worth 3 victory points.'
-        },
-        Province: {
-            cost: 9,
-            vp: 6,
-            emoji: '🏰',
-            description: 'Worth 6 victory points.'
-        },
-        Jester: {
-            cost: 5,
-            coins: 1,
-            vp: 1,
-            emoji: '🤹',
-            description: 'Adds comic relief and 1 VP.'
-        },
-        Village: {
-            cost: 4,
-            coins: 1,
-            extraDraw: 1,
-            emoji: '🏘️',
-            description: 'Draw an extra card each turn.'
-        },
-        Militia: {
-            cost: 4,
-            coins: 2,
-            attack: 1,
-            emoji: '⚔️',
-            description: "Reduces opponent's coins by 1 when in hand."
-        },
-        Squire: {
-            cost: 3,
-            coins: 1,
-            defense: 1,
-            emoji: '🛡️',
-            description: 'Young warrior providing 1 defense.'
-        },
-        Knight: {
-            cost: 6,
-            coins: 1,
-            attack: 2,
-            defense: 1,
-            emoji: '🗡️',
-            description: 'Seasoned fighter with 2 attack and 1 defense.'
-        },
-        Archer: {
-            cost: 4,
-            attack: 1,
-            extraDraw: 1,
-            emoji: '🏹',
-            description: 'Ranged unit drawing a card when played.'
-        },
-        SiegeTower: {
-            cost: 7,
-            attack: 2,
-            emoji: '🪜',
-            description: 'Large engine bringing 2 attack.'
-        },
-        Castle: {
-            cost: 8,
-            vp: 4,
-            defense: 2,
-            emoji: '🏰',
-            description: 'Stronghold worth 4 VP and 2 defense.'
-        },
-        Guard: {
-            cost: 3,
-            coins: 1,
-            defense: 1,
-            emoji: '🛡️',
-            description: 'Basic protection adding 1 defense.'
-        },
-        Moat: {
-            cost: 2,
-            defense: 2,
-            emoji: '🌊',
-            description: 'Flooded ditch adding 2 defense.'
-        },
-        Market: {
-            cost: 5,
-            coins: 2,
-            extraDraw: 1,
-            emoji: '🏪',
-            description: 'Trade hub generating coins and an extra draw.'
-        },
-        Barracks: {
-            cost: 4,
-            extraDraw: 1,
-            defense: 1,
-            emoji: '🏟️',
-            description: 'Training ground granting 1 defense and draw.'
-        },
-        Blacksmith: {
-            cost: 4,
-            coins: 1,
-            attack: 1,
-            emoji: '⚒️',
-            description: 'Forge increasing attack and coins.'
-        },
-        Chapel: {
-            cost: 3,
-            vp: 1,
-            defense: 1,
-            emoji: '⛪',
-            description: 'Place of worship offering 1 VP and defense.'
-        },
-        Stable: {
-            cost: 5,
-            coins: 2,
-            extraDraw: 1,
-            emoji: '🐴',
-            description: 'Stabling horses for coins and a draw.'
-        },
-        Infantry: {
-            cost: 3,
-            attack: 1,
-            defense: 1,
-            emoji: '🪓',
-            description: 'Foot soldier with balanced attack and defense.'
-        },
-        Catapult: {
-            cost: 6,
-            attack: 3,
-            emoji: '🪨',
-            description: 'Siege engine adding 3 attack.'
-        },
-        Trebuchet: {
-            cost: 7,
-            attack: 3,
-            defense: 1,
-            emoji: '🎯',
-            description: 'Powerful launcher with attack and defense.'
-        },
-        Merchant: {
-            cost: 4,
-            coins: 2,
-            emoji: '🛍️',
-            description: 'Travelling trader worth 2 coins.'
-        },
-        Farmer: {
-            cost: 2,
-            coins: 1,
-            defense: 1,
-            emoji: '🌾',
-            description: 'Provides food and minor defense.'
-        },
-        Baker: {
-            cost: 3,
-            coins: 1,
-            extraDraw: 1,
-            emoji: '🥖',
-            description: 'Supplies bread and 1 extra draw.'
-        },
-        Tavern: {
-            cost: 4,
-            coins: 2,
-            emoji: '🍻',
-            description: 'Gathering place yielding 2 coins.'
-        },
-        Inn: {
-            cost: 3,
-            coins: 1,
-            extraDraw: 1,
-            emoji: '🏨',
-            description: 'Resting spot for coins and a draw.'
-        },
-        Mill: {
-            cost: 4,
-            coins: 2,
-            emoji: '🌽',
-            description: 'Processes grain for 2 coins.'
-        },
-        Priest: {
-            cost: 5,
-            defense: 2,
-            vp: 1,
-            emoji: '🙏',
-            description: 'Holy man granting defense and VP.'
-        },
-        Wizard: {
-            cost: 6,
-            attack: 2,
-            extraDraw: 1,
-            emoji: '🧙',
-            description: 'Caster with attack and a draw.'
-        },
-        Alchemist: {
-            cost: 6,
-            coins: 2,
-            extraDraw: 1,
-            emoji: '⚗️',
-            description: 'Mystic who turns lead into coins and a draw.'
-        },
-        Court: {
-            cost: 5,
-            coins: 1,
-            vp: 2,
-            extraDraw: 1,
-            emoji: '🏛️',
-            description: 'Seat of power granting VP and draw.'
-        },
-        Throne: {
-            cost: 7,
-            vp: 3,
-            defense: 1,
-            emoji: '👑',
-            description: 'Symbol of rule adding VP and defense.'
-        },
-        Guardhouse: {
-            cost: 4,
-            defense: 2,
-            emoji: '🏰',
-            description: 'Fortified structure with 2 defense.'
-        },
-        Tower: {
-            cost: 6,
-            defense: 3,
-            emoji: '🗼',
-            description: 'Watchtower providing 3 defense.'
-        },
-        Wall: {
-            cost: 5,
-            defense: 3,
-            emoji: '🧱',
-            description: 'Sturdy wall worth 3 defense.'
-        },
-        Hospital: {
-            cost: 4,
-            defense: 1,
-            extraDraw: 1,
-            emoji: '🏥',
-            description: 'Heals troops and draws a card.'
-        },
-        TrainingGrounds: {
-            cost: 5,
-            attack: 1,
-            extraDraw: 1,
-            emoji: '🥋',
-            description: 'Prepares warriors with attack and draw.'
-        },
-        Mine: {
-            cost: 5,
-            coins: 2,
-            emoji: '⛏️',
-            description: 'Source of ore worth 2 coins.'
-        },
-        Quarry: {
-            cost: 4,
-            coins: 1,
-            defense: 1,
-            emoji: '🪨',
-            description: 'Stone works giving coins and defense.'
-        },
-        Explorer: {
-            cost: 4,
-            extraDraw: 2,
-            emoji: '🧭',
-            description: 'Ventures forth drawing extra cards.'
-        },
-        Ranger: {
-            cost: 5,
-            attack: 1,
-            extraDraw: 1,
-            emoji: '🏕️',
-            description: 'Watches the wilds with attack and draw.'
-        },
-        Scout: {
-            cost: 3,
-            extraDraw: 1,
-            emoji: '🕵️',
-            description: 'Provides reconnaissance and a draw.'
-        },
-        Trader: {
-            cost: 4,
-            coins: 2,
-            emoji: '💰',
-            description: 'Commercial expert worth 2 coins.'
-        },
-        Scholar: {
-            cost: 3,
-            extraDraw: 2,
-            emoji: '📚',
-            description: 'Learned figure drawing two cards.'
-        },
-        Library: {
-            cost: 6,
-            vp: 2,
-            extraDraw: 2,
-            emoji: '📖',
-            description: 'Repository of knowledge worth VP and draws.'
-        },
-        Swordsman: {
-            cost: 5,
-            attack: 2,
-            emoji: '🗡️',
-            description: 'Skilled attacker with 2 attack.'
-        },
-        Ballista: {
-            cost: 7,
-            attack: 4,
-            emoji: '🎯',
-            description: 'Deadly siege weapon with 4 attack.'
-        }
-    };
-
+document.addEventListener('DOMContentLoaded', async () => {
+    const response = await fetch('js/cards.json');
+    const cardData = await response.json();
     let deck = [];
     let discard = [];
     let hand = [];
     let coins = 0;
     let turn = 0;
     let round = 1;
+    let bonusVP = 0;
+    let aiBonusVP = 0;
     const selectedCards = new Set();
 
     // AI state
@@ -377,6 +48,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function getDiscount(isAi) {
+        const arr = isAi ? aiHand : hand;
+        return arr.reduce((sum, c) => sum + (cardData[c].discount || 0), 0);
+    }
+
+    function getModValue(isAi, type) {
+        const arr = isAi ? aiHand : hand;
+        let mul = 1;
+        let div = 1;
+        arr.forEach(c => {
+            const data = cardData[c];
+            if (data[type + 'Multiplier']) mul *= data[type + 'Multiplier'];
+            if (data[type + 'Divider']) div *= data[type + 'Divider'];
+        });
+        return mul / div;
+    }
+
     function draw(n) {
         for (let i = 0; i < n; i++) {
             if (deck.length === 0) {
@@ -406,6 +94,8 @@ document.addEventListener('DOMContentLoaded', () => {
         hand.forEach(c => {
             extra += cardData[c].extraDraw || 0;
         });
+        extra *= getModValue(false, 'draw');
+        extra = Math.floor(extra);
         if (extra > 0) {
             draw(extra);
         }
@@ -416,6 +106,8 @@ document.addEventListener('DOMContentLoaded', () => {
         aiHand.forEach(c => {
             extra += cardData[c].extraDraw || 0;
         });
+        extra *= getModValue(true, 'draw');
+        extra = Math.floor(extra);
         if (extra > 0) {
             aiDraw(extra);
         }
@@ -423,16 +115,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function countCoins() {
         coins = hand.reduce((sum, card) => sum + (cardData[card].coins || 0), 0);
-        const attack = aiHand.reduce((sum, card) => sum + (cardData[card].attack || 0), 0);
-        const defense = hand.reduce((sum, card) => sum + (cardData[card].defense || 0), 0);
+        coins *= getModValue(false, 'coin');
+        const attack = aiHand.reduce((sum, card) => sum + (cardData[card].attack || 0), 0) * getModValue(true, 'attack');
+        const defense = hand.reduce((sum, card) => sum + (cardData[card].defense || 0), 0) * getModValue(false, 'defense');
         coins = Math.max(0, coins - Math.max(0, attack - defense));
+        coins = Math.floor(coins);
     }
 
     function countAiCoins() {
         aiCoins = aiHand.reduce((sum, card) => sum + (cardData[card].coins || 0), 0);
-        const attack = hand.reduce((sum, card) => sum + (cardData[card].attack || 0), 0);
-        const defense = aiHand.reduce((sum, card) => sum + (cardData[card].defense || 0), 0);
+        aiCoins *= getModValue(true, 'coin');
+        const attack = hand.reduce((sum, card) => sum + (cardData[card].attack || 0), 0) * getModValue(false, 'attack');
+        const defense = aiHand.reduce((sum, card) => sum + (cardData[card].defense || 0), 0) * getModValue(true, 'defense');
         aiCoins = Math.max(0, aiCoins - Math.max(0, attack - defense));
+        aiCoins = Math.floor(aiCoins);
     }
 
     function calculateVP(arr) {
@@ -538,8 +234,8 @@ document.addEventListener('DOMContentLoaded', () => {
         aiDeckCount.textContent = aiDeck.length;
         aiDiscardCount.textContent = aiDiscard.length;
         aiCoinCount.textContent = aiCoins;
-        vpCount.textContent = calculateVP(deck) + calculateVP(discard) + calculateVP(hand);
-        aiVpCount.textContent = calculateVP(aiDeck) + calculateVP(aiDiscard) + calculateVP(aiHand);
+        vpCount.textContent = calculateVP(deck) + calculateVP(discard) + calculateVP(hand) + bonusVP;
+        aiVpCount.textContent = calculateVP(aiDeck) + calculateVP(aiDiscard) + calculateVP(aiHand) + aiBonusVP;
     }
 
     function setupMarket() {
@@ -556,6 +252,8 @@ document.addEventListener('DOMContentLoaded', () => {
         coins = 0;
         turn = 1;
         selectedCards.clear();
+        bonusVP = 0;
+        aiBonusVP = 0;
         aiDeck = [];
         aiDiscard = [];
         aiHand = [];
@@ -583,10 +281,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function buyCard(name, index) {
-        const cost = cardData[name].cost;
+        const discount = getDiscount(false);
+        const baseCost = cardData[name].cost;
+        const cost = Math.max(0, baseCost - discount);
         const available = getSelectedCoinTotal();
         if (available < cost) {
-            message.textContent = 'Not enough selected coins.';
+            message.textContent = `Not enough selected coins. Cost is ${cost}.`;
             return;
         }
 
@@ -600,6 +300,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 discard.push(hand.splice(i, 1)[0]);
             });
             discard.push(name);
+            const data = cardData[name];
+            if (data.coinOnBuy) coins += data.coinOnBuy;
+            if (data.drawOnBuy) {
+                draw(data.drawOnBuy);
+                applyExtraDraw();
+            }
+            if (data.attackOnBuy) {
+                const defense = aiHand.reduce((s,c)=>s+(cardData[c].defense||0),0) * getModValue(true,'defense');
+                const attackAmt = data.attackOnBuy * getModValue(false,'attack');
+                aiCoins = Math.max(0, aiCoins - Math.max(0, attackAmt - defense));
+            }
+            if (data.vpOnBuy) bonusVP += data.vpOnBuy;
             selectedCards.clear();
             countCoins();
             if (typeof index === 'number') {
@@ -616,12 +328,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function aiTurn() {
         countAiCoins();
         let choice = null;
+        const aiDiscount = getDiscount(true);
         const options = market
-            .filter(n => cardData[n].cost <= aiCoins)
+            .filter(n => (cardData[n].cost - aiDiscount) <= aiCoins)
             .sort((a, b) => cardData[b].cost - cardData[a].cost);
         if (options.length > 0) {
             choice = options[0];
-            aiCoins -= cardData[choice].cost;
+            const finalCost = Math.max(0, cardData[choice].cost - aiDiscount);
+            aiCoins -= finalCost;
             aiDiscard.push(choice);
             const idx = market.indexOf(choice);
             if (idx !== -1) {
@@ -631,6 +345,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         aiDiscard = aiDiscard.concat(aiHand);
         aiHand = [];
+        if (choice) {
+            const data = cardData[choice];
+            if (data.coinOnBuy) aiCoins += data.coinOnBuy;
+            if (data.drawOnBuy) {
+                aiDraw(data.drawOnBuy);
+            }
+            if (data.attackOnBuy) {
+                const defense = hand.reduce((s,c)=>s+(cardData[c].defense||0),0) * getModValue(false,'defense');
+                const attackAmt = data.attackOnBuy * getModValue(true,'attack');
+                coins = Math.max(0, coins - Math.max(0, attackAmt - defense));
+            }
+            if (data.vpOnBuy) aiBonusVP += data.vpOnBuy;
+        }
         aiDraw(5);
         applyAiExtraDraw();
         countAiCoins();
@@ -640,8 +367,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function checkWin() {
-        const playerVP = calculateVP(deck) + calculateVP(discard) + calculateVP(hand);
-        const enemyVP = calculateVP(aiDeck) + calculateVP(aiDiscard) + calculateVP(aiHand);
+        const playerVP = calculateVP(deck) + calculateVP(discard) + calculateVP(hand) + bonusVP;
+        const enemyVP = calculateVP(aiDeck) + calculateVP(aiDiscard) + calculateVP(aiHand) + aiBonusVP;
         if (playerVP >= 15 || enemyVP >= 15) {
             const winner = playerVP > enemyVP ? 'You' : 'AI';
             message.textContent = `${winner} win round ${round}! Click New Game for next round.`;
