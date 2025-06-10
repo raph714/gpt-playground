@@ -1,6 +1,20 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const response = await fetch('js/cards.json');
     const cardData = await response.json();
+
+    function adjustCosts() {
+        Object.values(cardData).forEach(data => {
+            let impact = (data.coins || 0) + (data.extraDraw || 0) * 1.5 +
+                         (data.attack || 0) * 2 + (data.defense || 0) +
+                         (data.vp || 0) * 3;
+            impact += (data.coinOnBuy || 0) * 1.5 + (data.drawOnBuy || 0) * 1.5 +
+                      (data.attackOnBuy || 0) * 2 + (data.vpOnBuy || 0) * 3 +
+                      (data.discount || 0) * 0.5;
+            data.cost = Math.max(1, Math.round(impact));
+        });
+    }
+
+    adjustCosts();
     let deck = [];
     let discard = [];
     let hand = [];
@@ -40,6 +54,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     const aiDeckCount = document.getElementById('aiDeckCount');
     const aiDiscardCount = document.getElementById('aiDiscardCount');
     const aiCoinCount = document.getElementById('aiCoinCount');
+    const healthSpan = document.getElementById('health');
+    const shieldSpan = document.getElementById('shield');
+    const aiHealthSpan = document.getElementById('aiHealth');
+    const aiShieldSpan = document.getElementById('aiShield');
+
+    let health = 20;
+    let shield = 0;
+    let aiHealth = 20;
+    let aiShield = 0;
 
     function shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {
@@ -116,18 +139,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     function countCoins() {
         coins = hand.reduce((sum, card) => sum + (cardData[card].coins || 0), 0);
         coins *= getModValue(false, 'coin');
-        const attack = aiHand.reduce((sum, card) => sum + (cardData[card].attack || 0), 0) * getModValue(true, 'attack');
-        const defense = hand.reduce((sum, card) => sum + (cardData[card].defense || 0), 0) * getModValue(false, 'defense');
-        coins = Math.max(0, coins - Math.max(0, attack - defense));
         coins = Math.floor(coins);
     }
 
     function countAiCoins() {
         aiCoins = aiHand.reduce((sum, card) => sum + (cardData[card].coins || 0), 0);
         aiCoins *= getModValue(true, 'coin');
-        const attack = hand.reduce((sum, card) => sum + (cardData[card].attack || 0), 0) * getModValue(false, 'attack');
-        const defense = aiHand.reduce((sum, card) => sum + (cardData[card].defense || 0), 0) * getModValue(true, 'defense');
-        aiCoins = Math.max(0, aiCoins - Math.max(0, attack - defense));
         aiCoins = Math.floor(aiCoins);
     }
 
@@ -216,6 +233,53 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
+    function useCard(index) {
+        const name = hand.splice(index, 1)[0];
+        const data = cardData[name];
+        if (data.attack) {
+            let dmg = Math.floor(data.attack * getModValue(false, 'attack'));
+            if (aiShield >= dmg) {
+                aiShield -= dmg;
+            } else {
+                aiHealth -= (dmg - aiShield);
+                aiShield = 0;
+            }
+        }
+        if (data.defense) {
+            shield += Math.floor(data.defense * getModValue(false, 'defense'));
+        }
+        if (data.extraDraw) {
+            draw(data.extraDraw);
+        }
+        discard.push(name);
+        updateDisplay();
+        checkWin();
+    }
+
+    function aiUseAllCards() {
+        aiHand.forEach(name => {
+            const data = cardData[name];
+            if (data.coins) aiCoins += data.coins;
+            if (data.attack) {
+                let dmg = Math.floor(data.attack * getModValue(true, 'attack'));
+                if (shield >= dmg) {
+                    shield -= dmg;
+                } else {
+                    health -= (dmg - shield);
+                    shield = 0;
+                }
+            }
+            if (data.defense) {
+                aiShield += Math.floor(data.defense * getModValue(true, 'defense'));
+            }
+            if (data.extraDraw) {
+                aiDraw(data.extraDraw);
+            }
+            aiDiscard.push(name);
+        });
+        aiHand = [];
+    }
+
     function updateDisplay() {
         deckCount.textContent = deck.length;
         discardCount.textContent = discard.length;
@@ -224,16 +288,30 @@ document.addEventListener('DOMContentLoaded', async () => {
         roundNumber.textContent = round;
         handDiv.innerHTML = '';
         hand.forEach((c, idx) => {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'hand-card';
+            wrapper.dataset.index = idx;
+
             const card = createCardElement(c);
-            card.classList.add('hand-card', 'selectable');
-            card.dataset.index = idx;
+            card.classList.add('selectable');
             if (selectedCards.has(idx)) card.classList.add('selected');
             card.addEventListener('click', () => toggleCardSelection(idx));
-            handDiv.appendChild(card);
+
+            const btn = document.createElement('button');
+            btn.textContent = 'Use';
+            btn.addEventListener('click', (e) => { e.stopPropagation(); useCard(idx); });
+
+            wrapper.appendChild(card);
+            wrapper.appendChild(btn);
+            handDiv.appendChild(wrapper);
         });
         aiDeckCount.textContent = aiDeck.length;
         aiDiscardCount.textContent = aiDiscard.length;
         aiCoinCount.textContent = aiCoins;
+        healthSpan.textContent = health;
+        shieldSpan.textContent = shield;
+        aiHealthSpan.textContent = aiHealth;
+        aiShieldSpan.textContent = aiShield;
         vpCount.textContent = calculateVP(deck) + calculateVP(discard) + calculateVP(hand) + bonusVP;
         aiVpCount.textContent = calculateVP(aiDeck) + calculateVP(aiDiscard) + calculateVP(aiHand) + aiBonusVP;
     }
@@ -251,6 +329,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         hand = [];
         coins = 0;
         turn = 1;
+        health = 20;
+        shield = 0;
+        aiHealth = 20;
+        aiShield = 0;
         selectedCards.clear();
         bonusVP = 0;
         aiBonusVP = 0;
@@ -307,9 +389,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 applyExtraDraw();
             }
             if (data.attackOnBuy) {
-                const defense = aiHand.reduce((s,c)=>s+(cardData[c].defense||0),0) * getModValue(true,'defense');
-                const attackAmt = data.attackOnBuy * getModValue(false,'attack');
-                aiCoins = Math.max(0, aiCoins - Math.max(0, attackAmt - defense));
+                let dmg = data.attackOnBuy * getModValue(false, 'attack');
+                if (aiShield >= dmg) {
+                    aiShield -= dmg;
+                } else {
+                    aiHealth -= (dmg - aiShield);
+                    aiShield = 0;
+                }
             }
             if (data.vpOnBuy) bonusVP += data.vpOnBuy;
             selectedCards.clear();
@@ -326,7 +412,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function aiTurn() {
-        countAiCoins();
+        aiCoins = 0;
+        aiUseAllCards();
         let choice = null;
         const aiDiscount = getDiscount(true);
         const options = market
@@ -343,8 +430,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 drawMarket();
             }
         }
-        aiDiscard = aiDiscard.concat(aiHand);
-        aiHand = [];
+        // cards have already been used and moved to discard
         if (choice) {
             const data = cardData[choice];
             if (data.coinOnBuy) aiCoins += data.coinOnBuy;
@@ -352,21 +438,32 @@ document.addEventListener('DOMContentLoaded', async () => {
                 aiDraw(data.drawOnBuy);
             }
             if (data.attackOnBuy) {
-                const defense = hand.reduce((s,c)=>s+(cardData[c].defense||0),0) * getModValue(false,'defense');
-                const attackAmt = data.attackOnBuy * getModValue(true,'attack');
-                coins = Math.max(0, coins - Math.max(0, attackAmt - defense));
+                let dmg = data.attackOnBuy * getModValue(true, 'attack');
+                if (shield >= dmg) {
+                    shield -= dmg;
+                } else {
+                    health -= (dmg - shield);
+                    shield = 0;
+                }
             }
             if (data.vpOnBuy) aiBonusVP += data.vpOnBuy;
         }
         aiDraw(5);
         applyAiExtraDraw();
-        countAiCoins();
+        aiCoins = 0;
         renderMarket();
         checkWin();
         return choice ? `AI bought ${choice}!` : 'AI bought nothing.';
     }
 
     function checkWin() {
+        if (health <= 0 || aiHealth <= 0) {
+            const winner = health > aiHealth ? 'You' : 'AI';
+            message.textContent = `${winner} won the battle! Click New Game to play again.`;
+            endTurnBtn.disabled = true;
+            marketDiv.querySelectorAll('button').forEach(b => b.disabled = true);
+            return;
+        }
         const playerVP = calculateVP(deck) + calculateVP(discard) + calculateVP(hand) + bonusVP;
         const enemyVP = calculateVP(aiDeck) + calculateVP(aiDiscard) + calculateVP(aiHand) + aiBonusVP;
         if (playerVP >= 15 || enemyVP >= 15) {
