@@ -3,27 +3,46 @@ document.addEventListener('DOMContentLoaded', () => {
         Copper: {
             cost: 0,
             coins: 1,
+            emoji: '🪙',
             description: 'Basic currency worth 1 coin.'
         },
         Silver: {
             cost: 3,
             coins: 2,
-            description: 'Provides 2 coins.'
+            emoji: '🥈',
+            description: 'Shiny coin worth 2 coins.'
         },
         Gold: {
-            cost: 6,
+            cost: 7,
             coins: 3,
-            description: 'Provides 3 coins.'
+            emoji: '🥇',
+            description: 'Premium coin worth 3 coins.'
         },
         Estate: {
             cost: 2,
             vp: 1,
+            emoji: '🏠',
             description: 'Worth 1 victory point.'
         },
         Province: {
             cost: 8,
             vp: 6,
+            emoji: '🏰',
             description: 'Worth 6 victory points.'
+        },
+        Jester: {
+            cost: 4,
+            coins: 2,
+            vp: 1,
+            emoji: '🤹',
+            description: 'Adds comic relief and 1 VP.'
+        },
+        Village: {
+            cost: 3,
+            coins: 1,
+            extraDraw: 1,
+            emoji: '🏘️',
+            description: 'Draw an extra card each turn.'
         }
     };
 
@@ -96,6 +115,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function applyExtraDraw() {
+        let extra = 0;
+        hand.forEach(c => {
+            extra += cardData[c].extraDraw || 0;
+        });
+        if (extra > 0) {
+            draw(extra);
+        }
+    }
+
+    function applyAiExtraDraw() {
+        let extra = 0;
+        aiHand.forEach(c => {
+            extra += cardData[c].extraDraw || 0;
+        });
+        if (extra > 0) {
+            aiDraw(extra);
+        }
+    }
+
     function countCoins() {
         coins = hand.reduce((sum, card) => sum + (cardData[card].coins || 0), 0);
     }
@@ -153,6 +192,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const card = document.createElement('div');
         card.className = 'card';
 
+        const art = document.createElement('div');
+        art.className = 'card-art';
+        art.textContent = data.emoji || '';
+
         const title = document.createElement('div');
         title.className = 'card-title';
         title.textContent = name;
@@ -162,6 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
         desc.textContent = data.description;
 
         card.title = data.description;
+        card.appendChild(art);
         card.appendChild(title);
         card.appendChild(desc);
         return card;
@@ -236,7 +280,9 @@ document.addEventListener('DOMContentLoaded', () => {
         shuffle(deck);
         shuffle(aiDeck);
         draw(5);
+        applyExtraDraw();
         aiDraw(5);
+        applyAiExtraDraw();
         countCoins();
         countAiCoins();
         endTurnBtn.disabled = false;
@@ -297,6 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
         aiDiscard = aiDiscard.concat(aiHand);
         aiHand = [];
         aiDraw(5);
+        applyAiExtraDraw();
         countAiCoins();
         renderMarket();
         checkWin();
@@ -320,6 +367,7 @@ document.addEventListener('DOMContentLoaded', () => {
         hand = [];
         selectedCards.clear();
         draw(5);
+        applyExtraDraw();
         countCoins();
         const aiMsg = aiTurn();
         turn++;

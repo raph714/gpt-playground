@@ -22,3 +22,5 @@ the site from the URL reported in the workflow logs.
 - Card descriptions appear in the market and directly on cards in your hand.
 - Refreshed visuals with cleaner card layout, styled buttons, and highlighted
   game info boxes.
+- Added simple emoji card art, a new Jester and Village card, and tweaked
+  costs to reduce early gold rushes.
