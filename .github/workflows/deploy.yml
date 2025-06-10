@@ -24,6 +24,11 @@ jobs:
 
       - name: Configure Pages
         uses: actions/configure-pages@v4
+        with:
+          enablement: true
+
+      - name: Lint game code
+        run: node --check js/app.js
 
       - name: Lint game code
         run: node --check js/app.js
