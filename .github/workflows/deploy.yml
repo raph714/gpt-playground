@@ -33,6 +33,9 @@ jobs:
       - name: Lint game code
         run: node --check js/app.js
 
+      - name: Lint game code
+        run: node --check js/app.js
+
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
