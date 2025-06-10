@@ -41,6 +41,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let aiHand = [];
     let aiCoins = 0;
 
+    // market state
+    let marketDeck = [];
+    let market = [];
+    const MARKET_SIZE = 5;
+
     const newGameBtn = document.getElementById('newGame');
     const gameArea = document.getElementById('gameArea');
     const handDiv = document.getElementById('hand');
@@ -101,6 +106,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function calculateVP(arr) {
         return arr.reduce((sum, c) => sum + (cardData[c].vp || 0), 0);
+    }
+
+    function createMarketDeck() {
+        marketDeck = [];
+        const names = Object.keys(cardData);
+        for (let i = 0; i < 20; i++) {
+            marketDeck.push(names[Math.floor(Math.random() * names.length)]);
+        }
+        shuffle(marketDeck);
+    }
+
+    function drawMarket() {
+        while (market.length < MARKET_SIZE && marketDeck.length > 0) {
+            market.push(marketDeck.pop());
+        }
+    }
+
+    function renderMarket() {
+        marketDiv.innerHTML = '';
+        market.forEach((name, idx) => {
+            const data = cardData[name];
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'market-card';
+
+            const card = createCardElement(name);
+
+            const cost = document.createElement('div');
+            cost.className = 'card-cost';
+            cost.textContent = `Cost: ${data.cost}`;
+
+            const btn = document.createElement('button');
+            btn.textContent = 'Buy';
+            btn.addEventListener('click', () => buyCard(name, idx));
+
+            wrapper.appendChild(card);
+            wrapper.appendChild(cost);
+            wrapper.appendChild(btn);
+            marketDiv.appendChild(wrapper);
+        });
     }
 
     function createCardElement(name) {
@@ -166,28 +211,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function setupMarket() {
-        marketDiv.innerHTML = '';
-        Object.keys(cardData).forEach(name => {
-            const data = cardData[name];
-
-            const wrapper = document.createElement('div');
-            wrapper.className = 'market-card';
-
-            const card = createCardElement(name);
-
-            const cost = document.createElement('div');
-            cost.className = 'card-cost';
-            cost.textContent = `Cost: ${data.cost}`;
-
-            const btn = document.createElement('button');
-            btn.textContent = 'Buy';
-            btn.addEventListener('click', () => buyCard(name, wrapper));
-
-            wrapper.appendChild(card);
-            wrapper.appendChild(cost);
-            wrapper.appendChild(btn);
-            marketDiv.appendChild(wrapper);
-        });
+        createMarketDeck();
+        market = [];
+        drawMarket();
+        renderMarket();
     }
 
     function startGame() {
@@ -220,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
         checkWin();
     }
 
-    function buyCard(name, marketEl) {
+    function buyCard(name, index) {
         const cost = cardData[name].cost;
         const available = getSelectedCoinTotal();
         if (available < cost) {
@@ -240,9 +267,10 @@ document.addEventListener('DOMContentLoaded', () => {
             discard.push(name);
             selectedCards.clear();
             countCoins();
-            if (marketEl) {
-                marketEl.classList.add('purchased');
-                setTimeout(() => marketEl.remove(), 300);
+            if (typeof index === 'number') {
+                market.splice(index, 1);
+                drawMarket();
+                renderMarket();
             }
             message.textContent = `Bought ${name}!`;
             updateDisplay();
@@ -253,18 +281,24 @@ document.addEventListener('DOMContentLoaded', () => {
     function aiTurn() {
         countAiCoins();
         let choice = null;
-        const options = Object.keys(cardData)
+        const options = market
             .filter(n => cardData[n].cost <= aiCoins)
             .sort((a, b) => cardData[b].cost - cardData[a].cost);
         if (options.length > 0) {
             choice = options[0];
             aiCoins -= cardData[choice].cost;
             aiDiscard.push(choice);
+            const idx = market.indexOf(choice);
+            if (idx !== -1) {
+                market.splice(idx, 1);
+                drawMarket();
+            }
         }
         aiDiscard = aiDiscard.concat(aiHand);
         aiHand = [];
         aiDraw(5);
         countAiCoins();
+        renderMarket();
         checkWin();
         return choice ? `AI bought ${choice}!` : 'AI bought nothing.';
     }
