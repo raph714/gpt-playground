@@ -659,6 +659,7 @@ document.addEventListener('DOMContentLoaded', () => {
         applyExtraDraw();
         countCoins();
         const aiMsg = aiTurn();
+        setupMarket();
         turn++;
         updateDisplay();
         message.textContent = aiMsg;

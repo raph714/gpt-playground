@@ -32,3 +32,4 @@ the site from the URL reported in the workflow logs.
   defense and resource abilities.
 - Added a defense stat that offsets attack damage and updated the market to
   include every card type each round.
+- The market now refreshes all cards at the end of each turn.
