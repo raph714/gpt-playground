@@ -59,6 +59,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     const aiHealthSpan = document.getElementById('aiHealth');
     const aiShieldSpan = document.getElementById('aiShield');
 
+    // selection controls
+    const selectedCoinsSpan = document.getElementById('selectedCoins');
+    const selectCoinsBtn = document.getElementById('selectCoins');
+    const clearSelectionBtn = document.getElementById('clearSelection');
+
+    // battlefield
+    const playerBattleDiv = document.getElementById('playerBattle');
+    const aiBattleDiv = document.getElementById('aiBattle');
+
+    let playerBattlefield = [];
+    let aiBattlefield = [];
+
     let health = 20;
     let shield = 0;
     let aiHealth = 20;
@@ -186,6 +198,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             wrapper.appendChild(btn);
             marketDiv.appendChild(wrapper);
         });
+        updateMarketHighlights();
     }
 
     function createCardElement(name) {
@@ -221,6 +234,38 @@ document.addEventListener('DOMContentLoaded', async () => {
         return total;
     }
 
+    function updateSelectedDisplay() {
+        selectedCoinsSpan.textContent = getSelectedCoinTotal();
+        updateMarketHighlights();
+    }
+
+    function selectAllCoins() {
+        selectedCards.clear();
+        hand.forEach((c, idx) => {
+            if (cardData[c].coins) selectedCards.add(idx);
+        });
+        updateDisplay();
+        updateSelectedDisplay();
+    }
+
+    function clearSelection() {
+        selectedCards.clear();
+        updateDisplay();
+        updateSelectedDisplay();
+    }
+
+    function updateMarketHighlights() {
+        const discount = getDiscount(false);
+        const available = getSelectedCoinTotal();
+        const wrappers = marketDiv.querySelectorAll('.market-card');
+        wrappers.forEach((wrapper, idx) => {
+            const name = market[idx];
+            const cost = Math.max(0, cardData[name].cost - discount);
+            if (available >= cost) wrapper.classList.add('affordable');
+            else wrapper.classList.remove('affordable');
+        });
+    }
+
     function toggleCardSelection(index) {
         if (selectedCards.has(index)) {
             selectedCards.delete(index);
@@ -231,6 +276,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (el) {
             el.classList.toggle('selected');
         }
+        updateSelectedDisplay();
     }
 
     function useCard(index) {
@@ -244,15 +290,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                 aiHealth -= (dmg - aiShield);
                 aiShield = 0;
             }
+            playerBattlefield.push(name);
         }
         if (data.defense) {
             shield += Math.floor(data.defense * getModValue(false, 'defense'));
+            playerBattlefield.push(name);
         }
         if (data.extraDraw) {
             draw(data.extraDraw);
         }
         discard.push(name);
         updateDisplay();
+        renderBattlefield();
         checkWin();
     }
 
@@ -268,9 +317,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                     health -= (dmg - shield);
                     shield = 0;
                 }
+                aiBattlefield.push(name);
             }
             if (data.defense) {
                 aiShield += Math.floor(data.defense * getModValue(true, 'defense'));
+                aiBattlefield.push(name);
             }
             if (data.extraDraw) {
                 aiDraw(data.extraDraw);
@@ -278,6 +329,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             aiDiscard.push(name);
         });
         aiHand = [];
+        renderBattlefield();
     }
 
     function updateDisplay() {
@@ -314,6 +366,22 @@ document.addEventListener('DOMContentLoaded', async () => {
         aiShieldSpan.textContent = aiShield;
         vpCount.textContent = calculateVP(deck) + calculateVP(discard) + calculateVP(hand) + bonusVP;
         aiVpCount.textContent = calculateVP(aiDeck) + calculateVP(aiDiscard) + calculateVP(aiHand) + aiBonusVP;
+        renderBattlefield();
+    }
+
+    function renderBattlefield() {
+        playerBattleDiv.innerHTML = '';
+        playerBattlefield.forEach(name => {
+            const card = createCardElement(name);
+            card.classList.add('battle');
+            playerBattleDiv.appendChild(card);
+        });
+        aiBattleDiv.innerHTML = '';
+        aiBattlefield.forEach(name => {
+            const card = createCardElement(name);
+            card.classList.add('battle');
+            aiBattleDiv.appendChild(card);
+        });
     }
 
     function setupMarket() {
@@ -334,12 +402,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         aiHealth = 20;
         aiShield = 0;
         selectedCards.clear();
+        updateSelectedDisplay();
         bonusVP = 0;
         aiBonusVP = 0;
         aiDeck = [];
         aiDiscard = [];
         aiHand = [];
         aiCoins = 0;
+        playerBattlefield = [];
+        aiBattlefield = [];
+        renderBattlefield();
         for (let i = 0; i < 7; i++) deck.push('Copper');
         for (let i = 0; i < 3; i++) deck.push('Estate');
         for (let i = 0; i < 7; i++) aiDeck.push('Copper');
@@ -358,6 +430,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         setupMarket();
         gameArea.classList.remove('hidden');
         updateDisplay();
+        updateSelectedDisplay();
         message.textContent = '';
         checkWin();
     }
@@ -399,6 +472,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
             if (data.vpOnBuy) bonusVP += data.vpOnBuy;
             selectedCards.clear();
+            updateSelectedDisplay();
             countCoins();
             if (typeof index === 'number') {
                 market.splice(index, 1);
@@ -479,6 +553,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         discard = discard.concat(hand);
         hand = [];
         selectedCards.clear();
+        updateSelectedDisplay();
         draw(5);
         applyExtraDraw();
         countCoins();
@@ -492,4 +567,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     newGameBtn.addEventListener('click', startGame);
     endTurnBtn.addEventListener('click', endTurn);
+    selectCoinsBtn.addEventListener('click', selectAllCoins);
+    clearSelectionBtn.addEventListener('click', clearSelection);
 });

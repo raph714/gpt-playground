@@ -64,6 +64,11 @@ h1 {
     align-items: center;
     margin: 5px;
     width: 150px;
+    border: 2px solid transparent;
+}
+
+.market-card.affordable {
+    border-color: #4caf50;
 }
 
 /* remove extra margin on cards inside wrapper */
@@ -74,6 +79,20 @@ h1 {
 .market-card button,
 .market-card .card-cost {
     width: 100%;
+}
+
+#handControls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+#handControls p {
+    margin: 0;
+    font-weight: bold;
 }
 
 .selectable {
@@ -160,4 +179,24 @@ button:disabled {
 #message {
     font-weight: bold;
     margin-top: 1em;
+}
+
+#battlefield {
+    display: flex;
+    justify-content: center;
+    gap: 2em;
+    margin-top: 1em;
+}
+
+#playerBattle, #aiBattle {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5em;
+    margin-top: 0.5em;
+}
+
+.card.battle {
+    width: 100px;
+    height: 120px;
 }
