@@ -1,0 +1,40 @@
+Gameplay
+Basics:
+Game is for 2-5 players.
+This is a deck building, competitive game that also requires some cooperation! Each player will have strengths based on cards in their deck and players must work together or the whole crew loses.
+
+Game Setup:
+Each player starts with the same 10 card deck to build from. Each deck has xyz in it.
+Place the Detection marker at 0.
+Each player shuffles, then  draws 5 cards from their respective decks.
+Place the top 3 place cards into the map tray.
+Roll the die to see who goes first.
+Get rid of the body! Get the body to one of the dump sites on the board before the detection counter reaches 10.
+
+Turn Phases:
+Player chooses a map location and places it on the board.
+Resolve the effects on the chosen map card from top to bottom. Each item must be resolved before moving on to the next effect.
+Active player has priority to resolve both map and people triggers. They get 3 actions per turn to play cards, but may give their actions to other players to help overcome challenges and share rewards.
+At any point during the turn the active player may choose to deal with people in the detection counter.
+Once all map card effects are resolved, trigger all detection counter effects, and pass turn to the next player.
+
+Dealing with People
+When a person is revealed, the active player has priority when dealing with that person. If they chose not to resolve any of the requirements, priority is passed to the next player to respond. They will get all the rewards listed on the card, but may agree with other players to split those rewards in some manner.
+If a person is not dealt with, the card moves to the next open person slot in the detection counter. (left to right)
+
+Ending The Game
+
+If last map card is resolved, the body is disposed of, and the crew wins! If, on the other hand, the Detection marker reaches 10, the crew loses.
+If the crew wins, the person with the most affiliation points when the body is disposed wins. Affiliation points are gained through the encounter deck, interaction with person cards, and through cards in each player’s deck.
+
+Scoring
+
+Sum total affiliation points
+Subtract number of cards in your evidence pile
+Add any bonuses from other cards
+
+Affiliation
+During the course of the game players will be awarded affiliation points, and these may be played in various ways.
+Traded for action points.
+Used as victory points at the end of the game.
+Cached on the player board to gain an advantage in one of the marked areas.
