@@ -13,6 +13,9 @@ let currentPlayerIndex = 0;
 let actionsLeft = 3;
 let handAreas = [];
 let mapTray = [];
+let actionQueue = [];
+let currentAction = null;
+let turnPhase = 'chooseMap';
 
 function shuffle(arr){
     for(let i=arr.length-1;i>0;i--){
@@ -63,16 +66,24 @@ function updateTurnInfo(){
     if(players.length === 0) return;
     document.getElementById('current-player').textContent = players[currentPlayerIndex].name;
     document.getElementById('actions-left').textContent = actionsLeft;
+    players.forEach((p, idx)=>{
+        document.getElementById('aff'+(idx+1)).textContent = p.affiliation;
+    });
 }
 
 function nextPlayer(){
     currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
     actionsLeft = 3;
+    actionQueue = [];
+    document.getElementById('action-info').style.display='none';
+    fillMapTray();
+    turnPhase = 'chooseMap';
     updateTurnInfo();
 }
 
 function drawCard(deck,name){
     if(deck.length===0) return;
+    if(turnPhase !== 'playerActions') return;
     if(actionsLeft <= 0){
         alert('No actions left! End your turn.');
         return;
@@ -124,9 +135,13 @@ function fillMapTray(){
 }
 
 function selectMapCard(i){
+    if(turnPhase !== 'chooseMap') return;
     const card = mapTray.splice(i,1)[0];
     addMapToBoard(card);
     fillMapTray();
+    parseMapEffects(card.desc);
+    turnPhase = 'resolveMap';
+    nextAction();
 }
 
 function addMapToBoard(card){
@@ -136,6 +151,78 @@ function addMapToBoard(card){
     if(match){
         adjustDetection(parseInt(match[1],10));
     }
+}
+
+function enqueueAction(text, fn){
+    actionQueue.push({text, fn});
+}
+
+function nextAction(){
+    if(actionQueue.length === 0){
+        currentAction = null;
+        document.getElementById('action-info').style.display='none';
+        turnPhase = 'playerActions';
+        updateTurnInfo();
+        return;
+    }
+    currentAction = actionQueue.shift();
+    document.getElementById('current-action').textContent = currentAction.text;
+    document.getElementById('action-info').style.display='block';
+}
+
+function flipPerson(count){
+    for(let c=0;c<count;c++){
+        if(peopleDeck.length===0) return;
+        const card = peopleDeck.pop();
+        updateCount('people', peopleDeck.length);
+        const slots = document.querySelectorAll('#person-slots .person-slot');
+        for(const slot of slots){
+            if(slot.childNodes.length===0){
+                slot.appendChild(createCardElement(card));
+                break;
+            }
+        }
+        const match = card.desc.match(/(-?\d+)\s*Detection/i);
+        if(match){
+            adjustDetection(parseInt(match[1],10));
+        }
+    }
+}
+
+function changeAffiliation(idx, amt){
+    const p = players[idx];
+    p.affiliation = (p.affiliation||0) + amt;
+    if(p.affiliation < 0) p.affiliation = 0;
+    updateTurnInfo();
+}
+
+function drawOrAffiliation(){
+    if(confirm('OK = Draw 1 card, Cancel = Gain 1 Affiliation')){
+        drawFromPlayerDeck(currentPlayerIndex);
+    }else{
+        changeAffiliation(currentPlayerIndex,1);
+    }
+}
+
+function parseMapEffects(desc){
+    const lines = desc.split('<br>').map(l=>l.trim()).filter(l=>l);
+    lines.forEach(line=>{
+        let m;
+        if((m=line.match(/Flip\s*(\d+)/i))){
+            const n=parseInt(m[1],10);
+            enqueueAction(line,()=>flipPerson(n));
+        }else if(/Draw\s*1\s*or\s*Gain\s*1\s*Affiliation/i.test(line)){
+            enqueueAction(line,()=>drawOrAffiliation());
+        }else if((m=line.match(/Gain\s*(\d+)\s*Affiliation/i))||(m=line.match(/Get\s*(\d+)\s*Affiliation/i))){
+            const n=parseInt(m[1],10);
+            enqueueAction(line,()=>changeAffiliation(currentPlayerIndex,n));
+        }else if((m=line.match(/Draw\s*(\d+)/i))){
+            const n=parseInt(m[1],10);
+            enqueueAction(line,()=>{for(let i=0;i<n;i++) drawFromPlayerDeck(currentPlayerIndex);});
+        }else{
+            enqueueAction(line,()=>alert(line));
+        }
+    });
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
@@ -162,11 +249,12 @@ document.addEventListener('DOMContentLoaded',()=>{
             if(nameInput){
                 const deck = startingDeck.map(c=>({name:c.name, desc:c.desc}));
                 shuffle(deck);
-                const p = {name:nameInput, deck, discard:[], hand:[]};
+                const p = {name:nameInput, deck, discard:[], hand:[], affiliation:0};
                 players.push(p);
                 area.style.display = 'flex';
                 area.querySelector('.player-name').textContent = nameInput;
                 handAreas.push(area.querySelector('.hand'));
+                area.querySelector('.affiliation').textContent = '0';
             } else {
                 area.style.display = 'none';
             }
@@ -184,11 +272,19 @@ document.addEventListener('DOMContentLoaded',()=>{
             for(let d=0; d<5; d++) drawFromPlayerDeck(idx);
         });
         fillMapTray();
+        turnPhase = 'chooseMap';
         updateTurnInfo();
     });
 
     document.getElementById('end-turn').addEventListener('click',()=>{
+        if(turnPhase==='resolveMap') return;
         nextPlayer();
+    });
+    document.getElementById('resolve-action').addEventListener('click',()=>{
+        if(currentAction){
+            currentAction.fn();
+        }
+        nextAction();
     });
     document.querySelector('[data-action="draw-person"]').addEventListener('click',()=>drawCard(peopleDeck,'people'));
     document.querySelector('[data-action="draw-item"]').addEventListener('click',()=>drawCard(itemsDeck,'items'));

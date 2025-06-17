@@ -20,23 +20,31 @@
 <section id="turn-info" style="display:none;">
     <h2>Current Player: <span id="current-player"></span></h2>
     <p>Actions left: <span id="actions-left">3</span></p>
+    <div id="action-info" style="display:none;">
+        <p id="current-action"></p>
+        <button id="resolve-action">Resolve Action</button>
+    </div>
     <button id="end-turn">End Turn</button>
 </section>
 <div id="board" style="display:none;">
     <div id="player1-area" class="player-area">
         <h3 class="player-name" id="player1-name"></h3>
+        <p>Affiliation: <span class="affiliation" id="aff1">0</span></p>
         <div class="hand" id="hand1"></div>
     </div>
     <div id="player2-area" class="player-area">
         <h3 class="player-name" id="player2-name"></h3>
+        <p>Affiliation: <span class="affiliation" id="aff2">0</span></p>
         <div class="hand" id="hand2"></div>
     </div>
     <div id="player3-area" class="player-area">
         <h3 class="player-name" id="player3-name"></h3>
+        <p>Affiliation: <span class="affiliation" id="aff3">0</span></p>
         <div class="hand" id="hand3"></div>
     </div>
     <div id="player4-area" class="player-area">
         <h3 class="player-name" id="player4-name"></h3>
+        <p>Affiliation: <span class="affiliation" id="aff4">0</span></p>
         <div class="hand" id="hand4"></div>
     </div>
     <div id="center-area">
