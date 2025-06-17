@@ -20,7 +20,7 @@ At any point during the turn the active player may choose to deal with people in
 Once all map card effects are resolved, trigger all detection counter effects, and pass turn to the next player.
 
 Dealing with People
-When a person is revealed, the active player has priority when dealing with that person. If they chose not to resolve any of the requirements, priority is passed to the next player to respond. They will get all the rewards listed on the card, but may agree with other players to split those rewards in some manner.
+When a person is revealed, the card shows two separate costs. The first cost may be paid to avoid the top effect. If no player pays that cost, the first effect resolves. After that, any player may pay the second cost to trigger the bottom effect. If nobody pays the second cost, the bottom effect does not occur. Priority begins with the active player and passes clockwise for each cost. Players who pay a cost gain any rewards from the associated effect and may share them however they like.
 If a person is not dealt with, the card moves to the next open person slot in the detection counter. (left to right)
 
 Ending The Game

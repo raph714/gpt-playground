@@ -97,3 +97,12 @@ button {
     justify-content: center;
     margin-top: 5px;
 }
+
+.cost {
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+.effect {
+    margin-bottom: 4px;
+}
