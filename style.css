@@ -1,0 +1,23 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background: #f4f4f4;
+}
+.deck {
+    margin-bottom: 20px;
+    padding: 10px;
+    background: #fff;
+    border: 1px solid #ccc;
+}
+.card-list {
+    margin-top: 10px;
+}
+.card {
+    border: 1px solid #666;
+    padding: 5px;
+    margin-bottom: 5px;
+    background: #fafafa;
+}
+button {
+    margin-right: 5px;
+}
