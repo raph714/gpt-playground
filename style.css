@@ -21,3 +21,12 @@ body {
 button {
     margin-right: 5px;
 }
+
+#turn-info {
+    margin-bottom: 20px;
+}
+
+#setup input {
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
