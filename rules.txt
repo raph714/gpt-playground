@@ -4,15 +4,16 @@ Game is for 2-5 players.
 This is a deck building, competitive game that also requires some cooperation! Each player will have strengths based on cards in their deck and players must work together or the whole crew loses.
 
 Game Setup:
-Each player starts with the same 10 card deck to build from. Each deck has xyz in it.
+Each player starts with the same 10 card deck consisting of five **Basic Distraction** cards and five **Basic Intimidation** cards.
 Place the Detection marker at 0.
 Each player shuffles, then  draws 5 cards from their respective decks.
 Place the top 3 place cards into the map tray.
-Roll the die to see who goes first.
-Get rid of the body! Get the body to one of the dump sites on the board before the detection counter reaches 10.
+There are five person slots above the detection counter; each slot adds an effect when filled.
+Roll a die to determine who goes first, then play proceeds clockwise for the rest of the game.
+The body is disposed of automatically once all map cards have been played and resolved.
 
 Turn Phases:
-Player chooses a map location and places it on the board.
+Player chooses one of the three map cards in the tray and places it on the board.
 Resolve the effects on the chosen map card from top to bottom. Each item must be resolved before moving on to the next effect.
 Active player has priority to resolve both map and people triggers. They get 3 actions per turn to play cards, but may give their actions to other players to help overcome challenges and share rewards.
 At any point during the turn the active player may choose to deal with people in the detection counter.
