@@ -8,6 +8,20 @@
 </head>
 <body>
 <h1>Board Game Helper</h1>
+<section id="setup">
+    <h2>Players</h2>
+    <input type="text" id="player1" placeholder="Player 1">
+    <input type="text" id="player2" placeholder="Player 2">
+    <input type="text" id="player3" placeholder="Player 3">
+    <input type="text" id="player4" placeholder="Player 4">
+    <button id="start-game">Start Game</button>
+</section>
+
+<section id="turn-info" style="display:none;">
+    <h2>Current Player: <span id="current-player"></span></h2>
+    <p>Actions left: <span id="actions-left">3</span></p>
+    <button id="end-turn">End Turn</button>
+</section>
 <div id="counter">
     <h2>Detection Counter: <span id="detection-value">0</span></h2>
     <button id="inc-detection">+1</button>
