@@ -1,0 +1,80 @@
+[
+  {
+    "name": "Sneaky Shed [Everyone]",
+    "effects": [
+      "Trade Cards and Affiliation at 1:1",
+      "Trade cards with other players"
+    ]
+  },
+  {
+    "name": "Lou's Law Practice",
+    "effects": [
+      "Flip 1 Person",
+      "Draw 1 or Gain 1 Affiliation"
+    ]
+  },
+  {
+    "name": "The Run-down Corner",
+    "effects": [
+      "Flip 1 Person",
+      "Discard a card: Gain 1 affiliation."
+    ]
+  },
+  {
+    "name": "Behind Sam's Sausages",
+    "effects": [
+      "Flip 1 Person",
+      "Draw 2 cards, put 1 into your cache and the other on the bottom of the deck."
+    ]
+  },
+  {
+    "name": "Farmers Market",
+    "effects": [
+      "Draw 1 or Gain 1 Affiliation",
+      "Flip 1 Person"
+    ]
+  },
+  {
+    "name": "Sneaky Shed [Everyone]",
+    "effects": [
+      "Draw 3 cards and put 1 into your cache. Repeat 5 times.",
+      "Trade Cards and Affiliation at 1:1",
+      "Trade cards with other players"
+    ]
+  },
+  {
+    "name": "Harry's Hotdogs",
+    "effects": [
+      "Flip 2 person",
+      "Draw 1 or Get 1 Affiliation"
+    ]
+  },
+  {
+    "name": "Extra Funky Junkyard",
+    "effects": [
+      "Each player gains 1 affiliation.",
+      "Flip 1 Person",
+      "Discard 1 then draw 1. If no cards in hand, draw 2"
+    ]
+  },
+  {
+    "name": "Jamie's House",
+    "effects": [
+      "Get 2 Affiliation",
+      "Flip 1 Person"
+    ]
+  },
+  {
+    "name": "Pizza & Pilates",
+    "effects": [
+      "Flip 2 People",
+      "Draw 1 & Get 1 Affiliation"
+    ]
+  },
+  {
+    "name": "Dirty Dump [Everyone]",
+    "effects": [
+      "Pay 3 affiliation: Draw 3, put 1 in cache and others at the bottom of the deck."
+    ]
+  }
+]

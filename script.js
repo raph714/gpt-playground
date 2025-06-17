@@ -27,25 +27,28 @@ function shuffle(arr){
 function createCardElement(card){
     const div = document.createElement('div');
     div.className = 'card';
-    div.innerHTML = `<div class="card-title">${card.name}</div><div class="card-body">${card.desc}</div>`;
+    if(card.type === 'person'){
+        const body = [
+            `<div class="cost">${card.cost1}</div>`,
+            `<div class="effect">${card.effect1}</div>`,
+            `<div class="cost">${card.cost2}</div>`,
+            `<div class="effect">${card.effect2}</div>`
+        ].join('');
+        div.innerHTML = `<div class="card-title">${card.name}</div><div class="card-body">${body}</div>`;
+    } else {
+        const desc = card.effects ? card.effects.join('<br>') : card.desc;
+        div.innerHTML = `<div class="card-title">${card.name}</div><div class="card-body">${desc}</div>`;
+    }
     return div;
 }
 
-function parseDeck(text){
-    return text.trim().split(/\n\s*\n/).map(chunk=>{
-        const lines = chunk.trim().split(/\n/);
-        return {name: lines[0], desc: lines.slice(1).join('<br>')};
-    });
-}
-
 function loadDeck(file, target){
-    fetch(file).then(r=>r.text()).then(text=>{
-        const deck = parseDeck(text);
+    fetch(file).then(r=>r.json()).then(deck=>{
         shuffle(deck);
-        if(target==='map'){mapDeck=deck;updateCount('map',mapDeck.length);} 
-        if(target==='people'){peopleDeck=deck;updateCount('people',peopleDeck.length);} 
-        if(target==='items'){itemsDeck=deck;updateCount('items',itemsDeck.length);} 
-        if(target==='actions'){actionsDeck=deck;updateCount('actions',actionsDeck.length);} 
+        if(target==='map'){mapDeck=deck;updateCount('map',mapDeck.length);}
+        if(target==='people'){peopleDeck=deck;updateCount('people',peopleDeck.length);}
+        if(target==='items'){itemsDeck=deck;updateCount('items',itemsDeck.length);}
+        if(target==='actions'){actionsDeck=deck;updateCount('actions',actionsDeck.length);}
     });
 }
 
@@ -139,7 +142,7 @@ function selectMapCard(i){
     const card = mapTray.splice(i,1)[0];
     addMapToBoard(card);
     fillMapTray();
-    parseMapEffects(card.desc);
+    parseMapEffects(card);
     turnPhase = 'resolveMap';
     nextAction();
 }
@@ -147,7 +150,8 @@ function selectMapCard(i){
 function addMapToBoard(card){
     const board = document.getElementById('map-board');
     board.appendChild(createCardElement(card));
-    const match = card.desc.match(/(-?\d+)\s*Detection/i);
+    const text = card.effects ? card.effects.join('<br>') : card.desc;
+    const match = text.match(/(-?\d+)\s*Detection/i);
     if(match){
         adjustDetection(parseInt(match[1],10));
     }
@@ -155,6 +159,50 @@ function addMapToBoard(card){
 
 function enqueueAction(text, fn){
     actionQueue.push({text, fn});
+}
+
+function parsePersonEffect(line, playerIdx){
+    let m;
+    if((m=line.match(/(-?\d+)\s*Detection/i))){
+        const n=parseInt(m[1],10);
+        enqueueAction(line, ()=>adjustDetection(n));
+    } else if((m=line.match(/Gain\s*(\d+)\s*Affiliation/i))){
+        const n=parseInt(m[1],10);
+        enqueueAction(line, ()=>changeAffiliation(playerIdx,n));
+    } else if(/Gain\s*an?\s*Affiliation/i.test(line)){
+        enqueueAction(line, ()=>changeAffiliation(playerIdx,1));
+    } else if((m=line.match(/Lose\s*(\d+)\s*Affiliation/i))){
+        const n=parseInt(m[1],10);
+        enqueueAction(line, ()=>changeAffiliation(playerIdx,-n));
+    } else if((m=line.match(/Draw\s*(\d+)/i))){
+        const n=parseInt(m[1],10);
+        enqueueAction(line, ()=>{for(let i=0;i<n;i++) drawFromPlayerDeck(playerIdx);});
+    } else if(/discard/i.test(line)){
+        enqueueAction(line, ()=>alert(line));
+    } else {
+        enqueueAction(line, ()=>alert(line));
+    }
+}
+
+function askPlayersToPay(cost){
+    for(let i=0;i<players.length;i++){
+        const idx = (currentPlayerIndex + i) % players.length;
+        if(confirm(`${players[idx].name}: Pay cost "${cost}"?`)){
+            return idx;
+        }
+    }
+    return null;
+}
+
+function handlePersonCard(card){
+    const avoidIdx = askPlayersToPay(card.cost1);
+    if(avoidIdx === null){
+        parsePersonEffect(card.effect1, currentPlayerIndex);
+    }
+    const rewardIdx = askPlayersToPay(card.cost2);
+    if(rewardIdx !== null){
+        parsePersonEffect(card.effect2, rewardIdx);
+    }
 }
 
 function nextAction(){
@@ -182,10 +230,7 @@ function flipPerson(count){
                 break;
             }
         }
-        const match = card.desc.match(/(-?\d+)\s*Detection/i);
-        if(match){
-            adjustDetection(parseInt(match[1],10));
-        }
+        handlePersonCard(card);
     }
 }
 
@@ -204,8 +249,8 @@ function drawOrAffiliation(){
     }
 }
 
-function parseMapEffects(desc){
-    const lines = desc.split('<br>').map(l=>l.trim()).filter(l=>l);
+function parseMapEffects(card){
+    const lines = (card.effects || card.desc.split('<br>')).map(l=>l.trim()).filter(l=>l);
     lines.forEach(line=>{
         let m;
         if((m=line.match(/Flip\s*(\d+)/i))){
@@ -226,10 +271,10 @@ function parseMapEffects(desc){
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
-    loadDeck('map.txt','map');
-    loadDeck('people.txt','people');
-    loadDeck('items.txt','items');
-    loadDeck('actions.txt','actions');
+    loadDeck('map.json','map');
+    loadDeck('people.json','people');
+    loadDeck('items.json','items');
+    loadDeck('actions.json','actions');
     fetch('rules.txt').then(r=>r.text()).then(t=>{
         document.getElementById('rules-text').textContent=t;
     });
