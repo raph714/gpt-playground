@@ -36,10 +36,26 @@ function createCardElement(card){
         ].join('');
         div.innerHTML = `<div class="card-title">${card.name}</div><div class="card-body">${body}</div>`;
     } else {
-        const desc = card.effects ? card.effects.join('<br>') : card.desc;
-        div.innerHTML = `<div class="card-title">${card.name}</div><div class="card-body">${desc}</div>`;
+        const parts = [];
+        if(card.cost){
+            parts.push(`<div class="cost">${card.cost}</div>`);
+        }
+        const lines = card.effects ? card.effects : (card.desc ? card.desc.split('<br>') : []);
+        lines.forEach(l=>parts.push(`<div class="effect">${l}</div>`));
+        div.innerHTML = `<div class="card-title">${card.name}</div><div class="card-body">${parts.join('')}</div>`;
     }
     return div;
+}
+
+function getCardText(card){
+    if(card.type === 'person'){
+        return [card.cost1, card.effect1, card.cost2, card.effect2].join(' ');
+    }
+    const parts = [];
+    if(card.cost) parts.push(card.cost);
+    if(card.effects) parts.push(...card.effects);
+    if(card.desc) parts.push(card.desc);
+    return parts.join(' ');
 }
 
 function loadDeck(file, target){
@@ -96,7 +112,7 @@ function drawCard(deck,name){
     area.appendChild(createCardElement(card));
     updateCount(name, deck.length);
 
-    const match = card.desc.match(/(-?\d+)\s*Detection/i);
+    const match = getCardText(card).match(/(-?\d+)\s*Detection/i);
     if(match){
         adjustDetection(parseInt(match[1],10));
     }
@@ -150,8 +166,7 @@ function selectMapCard(i){
 function addMapToBoard(card){
     const board = document.getElementById('map-board');
     board.appendChild(createCardElement(card));
-    const text = card.effects ? card.effects.join('<br>') : card.desc;
-    const match = text.match(/(-?\d+)\s*Detection/i);
+    const match = getCardText(card).match(/(-?\d+)\s*Detection/i);
     if(match){
         adjustDetection(parseInt(match[1],10));
     }

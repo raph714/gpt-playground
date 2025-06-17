@@ -1,162 +1,275 @@
 [
   {
     "name": "Distraction",
-    "desc": "1 Action Pt.<br>2 Distraction<br>+1 Action Point"
+    "cost": "1 Action Pt.",
+    "effects": [
+      "2 Distraction",
+      "+1 Action Point"
+    ]
   },
   {
     "name": "Distraction",
-    "desc": "1 Action Pt.<br>3 Distraction<br>+1 Action Point"
+    "cost": "1 Action Pt.",
+    "effects": [
+      "3 Distraction",
+      "+1 Action Point"
+    ]
   },
   {
     "name": "Distraction",
-    "desc": "1 Action Pt.<br>4 Distraction<br>Scry 2 in Person Deck"
+    "cost": "1 Action Pt.",
+    "effects": [
+      "4 Distraction",
+      "Scry 2 in Person Deck"
+    ]
   },
   {
     "name": "Intimidation",
-    "desc": "1 Action Pt.<br>2 Intimidation"
+    "cost": "1 Action Pt.",
+    "effects": [
+      "2 Intimidation"
+    ]
   },
   {
     "name": "Intimidation",
-    "desc": "1 Action Pt.<br>3 Intimidation"
+    "cost": "1 Action Pt.",
+    "effects": [
+      "3 Intimidation"
+    ]
   },
   {
     "name": "Intimidation",
-    "desc": "1 Action Pt.<br>4 Intimidation"
+    "cost": "1 Action Pt.",
+    "effects": [
+      "4 Intimidation"
+    ]
   },
   {
     "name": "Bribery",
-    "desc": "1 Action Pt.<br>2 Distraction/Intimidation"
+    "cost": "1 Action Pt.",
+    "effects": [
+      "2 Distraction/Intimidation"
+    ]
   },
   {
     "name": "Bribery",
-    "desc": "1 Action Pt.<br>3 Distraction/Intimidation"
+    "cost": "1 Action Pt.",
+    "effects": [
+      "3 Distraction/Intimidation"
+    ]
   },
   {
     "name": "Bribery",
-    "desc": "1 Action Pt.<br>4 Distraction/Intimidation"
+    "cost": "1 Action Pt.",
+    "effects": [
+      "4 Distraction/Intimidation"
+    ]
   },
   {
     "name": "Deception",
-    "desc": "1 Action Pt.<br>2 Deception"
+    "cost": "1 Action Pt.",
+    "effects": [
+      "2 Deception"
+    ]
   },
   {
     "name": "Deception",
-    "desc": "1 Action Pt.<br>3 Deception<br>Draw 1 card"
+    "cost": "1 Action Pt.",
+    "effects": [
+      "3 Deception",
+      "Draw 1 card"
+    ]
   },
   {
     "name": "Deception",
-    "desc": "1 Action Pt.<br>4 Deception<br>Draw 1 card"
+    "cost": "1 Action Pt.",
+    "effects": [
+      "4 Deception",
+      "Draw 1 card"
+    ]
   },
   {
     "name": "Distraction",
-    "desc": ""
+    "cost": "",
+    "effects": []
   },
   {
     "name": "Juggling Demonstration",
-    "desc": "Action<br>1 Distraction<br>Reduce detection counter by 1. Gain an affiliation."
+    "cost": "1 Distraction",
+    "effects": [
+      "Reduce detection counter by 1. Gain an affiliation."
+    ]
   },
   {
     "name": "UFO Sighting",
-    "desc": "Action <br>1 Distraction<br>Ignore person requirements for this turn."
+    "cost": "1 Distraction",
+    "effects": [
+      "Ignore person requirements for this turn."
+    ]
   },
   {
     "name": "Soccer-goal Celebration",
-    "desc": "Action <br>1 Distraction<br>Trigger target person card's effect."
+    "cost": "1 Distraction",
+    "effects": [
+      "Trigger target person card's effect."
+    ]
   },
   {
     "name": "Tell a Stranger a little too much",
-    "desc": "Action <br>4 Distraction<br>Advance detection counter, witness of your choice becomes an ally."
+    "cost": "4 Distraction",
+    "effects": [
+      "Advance detection counter, witness of your choice becomes an ally."
+    ]
   },
   {
     "name": "Throw the First Pitch",
-    "desc": "Action <br>2 Distraction<br>Put target card in your discard pile into your hand."
+    "cost": "2 Distraction",
+    "effects": [
+      "Put target card in your discard pile into your hand."
+    ]
   },
   {
     "name": "Trip to Lost & Found",
-    "desc": "Action <br>2 Distraction<br>Put target card in evidence back into the deck."
+    "cost": "2 Distraction",
+    "effects": [
+      "Put target card in evidence back into the deck."
+    ]
   },
   {
     "name": "Smoke Break",
-    "desc": "Action <br>3 Distraction<br>Target player draws a card."
+    "cost": "3 Distraction",
+    "effects": [
+      "Target player draws a card."
+    ]
   },
   {
     "name": "Intimidation",
-    "desc": ""
+    "cost": "",
+    "effects": []
   },
   {
     "name": "Cut in Line",
-    "desc": "Action <br>1 Intimidation<br>Reduce detection by 2. Draw a person card."
+    "cost": "1 Intimidation",
+    "effects": [
+      "Reduce detection by 2. Draw a person card."
+    ]
   },
   {
     "name": "Chop Wood",
-    "desc": "Action <br>2 Intimidation<br>Reduce detection counter 1 for each card discarded this turn."
+    "cost": "2 Intimidation",
+    "effects": [
+      "Reduce detection counter 1 for each card discarded this turn."
+    ]
   },
   {
     "name": "Clean the Gun",
-    "desc": "Action <br>2 Intimidation<br>Play target action card from evidence and then place it at the bottom of the deck."
+    "cost": "2 Intimidation",
+    "effects": [
+      "Play target action card from evidence and then place it at the bottom of the deck."
+    ]
   },
   {
     "name": "Punch the Clock",
-    "desc": "Action <br>3 Intimidation<br>Scry 1, then draw 1."
+    "cost": "3 Intimidation",
+    "effects": [
+      "Scry 1, then draw 1."
+    ]
   },
   {
     "name": "Check My Pockets",
-    "desc": "Action <br>4 Intimidation<br>Put the top 2 cards of the deck onto the map. For each item card, reduce detection counter 1"
+    "cost": "4 Intimidation",
+    "effects": [
+      "Put the top 2 cards of the deck onto the map. For each item card, reduce detection counter 1"
+    ]
   },
   {
     "name": "Deception",
-    "desc": ""
+    "cost": "",
+    "effects": []
   },
   {
     "name": "Spikey Hair Visor",
-    "desc": "Disguise<br>2 Deception"
+    "cost": "2 Deception",
+    "effects": []
   },
   {
     "name": "Ask for Directions",
-    "desc": "Action<br>2 Deception<br>Trigger the effect of any Action or Item card on the Map, normal costs apply."
+    "cost": "2 Deception",
+    "effects": [
+      "Trigger the effect of any Action or Item card on the Map, normal costs apply."
+    ]
   },
   {
     "name": "Magic Trick ",
-    "desc": "Action <br>3 Deception<br>Each player gives 1 card to the player on on their left."
+    "cost": "3 Deception",
+    "effects": [
+      "Each player gives 1 card to the player on on their left."
+    ]
   },
   {
     "name": "Hallway Bump",
-    "desc": "Action <br>4 Deception<br>Advance the detection counter 1, each player gains and 1 affiliation or draws a card."
+    "cost": "4 Deception",
+    "effects": [
+      "Advance the detection counter 1, each player gains and 1 affiliation or draws a card."
+    ]
   },
   {
     "name": "Bribery",
-    "desc": ""
+    "cost": "",
+    "effects": []
   },
   {
     "name": "Flick a Gold Coin",
-    "desc": "Action <br>1 Bribery<br>Reduce detection counter by 1."
+    "cost": "1 Bribery",
+    "effects": [
+      "Reduce detection counter by 1."
+    ]
   },
   {
     "name": "Pay Someone to Dig a Hole",
-    "desc": "Action <br>2 Bribery<br>Put target item card from evidence into play."
+    "cost": "2 Bribery",
+    "effects": [
+      "Put target item card from evidence into play."
+    ]
   },
   {
     "name": "One Last Round",
-    "desc": "Action <br>4 Bribery<br>Turn one person into an ally."
+    "cost": "4 Bribery",
+    "effects": [
+      "Turn one person into an ally."
+    ]
   },
   {
     "name": "Multi",
-    "desc": ""
+    "cost": "",
+    "effects": []
   },
   {
     "name": "Break into a Car",
-    "desc": "Action <br>1 Deception, 1 Distraction<br>Put an item card from your hand on the map and draw two cards."
+    "cost": "1 Deception, 1 Distraction",
+    "effects": [
+      "Put an item card from your hand on the map and draw two cards."
+    ]
   },
   {
     "name": "Deliver Giant Check & Balloons",
-    "desc": "Action <br>2 Bribery, 1 Distraction<br>Shuffle up to 3 evidence in o the deck."
+    "cost": "2 Bribery, 1 Distraction",
+    "effects": [
+      "Shuffle up to 3 evidence in o the deck."
+    ]
   },
   {
     "name": "Happy Hour",
-    "desc": "Action <br>2 Deception, 1 Distraction<br>Look at the top card of your deck, if it's an item, put it into your hand."
+    "cost": "2 Deception, 1 Distraction",
+    "effects": [
+      "Look at the top card of your deck, if it's an item, put it into your hand."
+    ]
   },
   {
     "name": "Lucky Trip to the Dump",
-    "desc": "Action <br>2 Bribery, 1 Distraction<br>Put a card from the map on the bottom of the deck."
+    "cost": "2 Bribery, 1 Distraction",
+    "effects": [
+      "Put a card from the map on the bottom of the deck."
+    ]
   }
 ]
