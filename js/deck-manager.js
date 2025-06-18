@@ -6,18 +6,23 @@ import { EffectManager } from './effects.js';
 export class DeckManager {
     static async loadDecks() {
         const loadDeck = async (file, target) => {
-            const response = await fetch(window.location.origin + '/' + file);
-            const deck = await response.json();
-            CardUtils.shuffle(deck);
-            DeckState[target] = deck;
-            UI.updateCounter(target, deck.length);
+            try {
+                const response = await fetch(file);
+                const deck = await response.json();
+                CardUtils.shuffle(deck);
+                DeckState[target] = deck;
+                UI.updateCounter(target, deck.length);
+            } catch (err) {
+                console.error(`Error loading deck ${file}:`, err);
+                UI.showMessage(`Failed to load ${file}. Check console for details.`);
+            }
         };
 
         await Promise.all([
-            loadDeck('map.json', 'mapDeck'),
-            loadDeck('people.json', 'peopleDeck'),
-            loadDeck('items.json', 'itemsDeck'),
-            loadDeck('actions.json', 'actionsDeck')
+            loadDeck('../map.json', 'mapDeck'),
+            loadDeck('../people.json', 'peopleDeck'),
+            loadDeck('../items.json', 'itemsDeck'),
+            loadDeck('../actions.json', 'actionsDeck')
         ]);
     }
 

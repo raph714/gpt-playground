@@ -7,29 +7,33 @@ import { DeckManager } from './deck-manager.js';
 import { MapManager } from './map-manager.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // Load game decks
-    await GameManager.loadDecks();
+    try {
+        // Load game decks
+        await GameManager.loadDecks();
 
-    // Load rules
-    const rulesResponse = await fetch(window.location.origin + '/rules.txt');
-    const rulesText = await rulesResponse.text();
-    document.getElementById('rules-text').textContent = rulesText;
+        // Load rules
+        const rulesResponse = await fetch('./rules.txt');
+        const rulesText = await rulesResponse.text();
+        document.getElementById('rules-text').textContent = rulesText;
 
-    // Setup detection counter controls
-    document.getElementById('inc-detection').addEventListener('click', () => {
-        EffectManager.adjustDetection(1);
-    });
+        // Setup detection counter controls
+        document.getElementById('inc-detection').addEventListener('click', () => {
+            EffectManager.adjustDetection(1);
+        });
 
-    document.getElementById('dec-detection').addEventListener('click', () => {
-        EffectManager.adjustDetection(-1);
-    });
+        document.getElementById('dec-detection').addEventListener('click', () => {
+            EffectManager.adjustDetection(-1);
+        });
 
-    // Setup game start button
-    document.getElementById('start-game').addEventListener('click', () => {
-        if (GameManager.startGame()) {
-            setupGameButtons();
-        }
-    });
+        // Setup game start button
+        document.getElementById('start-game').addEventListener('click', () => {
+            if (GameManager.startGame()) {
+                setupGameButtons();
+            }
+        });
+    } catch (error) {
+        console.error('Error during initialization:', error);
+    }
 });
 
 function setupGameButtons() {
