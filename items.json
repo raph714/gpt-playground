@@ -1,0 +1,272 @@
+[
+  {
+    "name": "Pawn Broker Connection ",
+    "cost": "1 Distraction",
+    "effects": [
+      {
+        "id": "affiliation",
+        "amount": 2,
+        "text": "When another player gains an affiliation, you may discard a card to gain 2 affiliation points."
+      }
+    ]
+  },
+  {
+    "name": "Bullhorn",
+    "cost": "1 Distraction",
+    "effects": [
+      {
+        "id": "advance_detection_all_gain_distraction",
+        "text": "When a person comes into play, you may advance the detection counter, if you do, everyone gains an affiliation point in Distraction."
+      }
+    ]
+  },
+  {
+    "name": "Errant Frisbee",
+    "cost": "1 Distraction",
+    "effects": [
+      {
+        "id": "draw",
+        "amount": 2,
+        "text": "Once per turn, when a player draws a card, you may sacrifice an equipped item. If you do, draw 2 cards."
+      }
+    ]
+  },
+  {
+    "name": "Free Pile Score",
+    "cost": "1 Distraction",
+    "effects": [
+      {
+        "id": "affiliation",
+        "amount": 1,
+        "text": "Once per turn, when a player discards a card, you may gain an affiliation point."
+      }
+    ]
+  },
+  {
+    "name": "Busted Muffler",
+    "cost": "2 Distraction",
+    "effects": [
+      {
+        "id": "pay_affiliation_reduce_detection_on_item_play",
+        "text": "When a player plays an item, you may pay an affiliation to reduce the detection counter by 1."
+      }
+    ]
+  },
+  {
+    "name": "Damaged Duffel",
+    "cost": "1 Deception",
+    "effects": [
+      {
+        "id": "affiliation",
+        "amount": 1,
+        "text": "When an item goes into evidence from play, you may gain an affiliation point."
+      }
+    ]
+  },
+  {
+    "name": "Shiny Shovel",
+    "cost": "1 Deception",
+    "effects": [
+      {
+        "id": "affiliation",
+        "amount": 2,
+        "text": "When a player draws a card, you may discard a card. If you do, gain 2 affiliation points."
+      }
+    ]
+  },
+  {
+    "name": "Lost Wallet",
+    "cost": "1 Deception",
+    "effects": [
+      {
+        "id": "affiliation",
+        "amount": 1,
+        "text": "Once per turn, when a player discards a card, you may draw a card or gain an affiliation point."
+      }
+    ]
+  },
+  {
+    "name": "Large Cigar",
+    "cost": "1 Deception",
+    "effects": [
+      {
+        "id": "affiliation",
+        "amount": 2,
+        "text": "Once per turn, when a player plays an item, you may discard a card to gain 2 affiliation points."
+      }
+    ]
+  },
+  {
+    "name": "Dark Scarf",
+    "cost": "1 Deception",
+    "effects": [
+      {
+        "id": "draw_then_discard_on_affiliation",
+        "text": "When a player gains an affiliation point, you may draw a card, if you do, discard a card."
+      },
+      {
+        "id": "double_deception_actions",
+        "text": "x2 Deception Action Points"
+      }
+    ]
+  },
+  {
+    "name": "Padded Pocket",
+    "cost": "1 Bribery",
+    "effects": [
+      {
+        "id": "pay_affiliation_reduce_detection_on_ally",
+        "text": "When a person becomes an ally, you may pay an affiliation point to reduce the detection counter 1."
+      }
+    ]
+  },
+  {
+    "name": "Birder’s Binoculars",
+    "cost": "1 Bribery",
+    "effects": [
+      {
+        "id": "scry",
+        "amount": 2,
+        "text": "Once per turn, when a player draws a card, scry 2."
+      }
+    ]
+  },
+  {
+    "name": "Fragrant Cologne",
+    "cost": "1 Bribery",
+    "effects": [
+      {
+        "id": "affiliation",
+        "amount": 1,
+        "text": "Once per turn, when a player plays an item, gain an affiliation."
+      }
+    ]
+  },
+  {
+    "name": "Money on the Ground",
+    "cost": "1 Bribery",
+    "effects": [
+      {
+        "id": "discard_reduce_detection_on_item_play",
+        "text": "Once per turn, when a player plays an item, you may discard a card to reduce the detection counter."
+      }
+    ]
+  },
+  {
+    "name": "Martini Shaker",
+    "cost": "1 Bribery",
+    "effects": [
+      {
+        "id": "scry",
+        "amount": 1,
+        "text": "When a player gains an affiliation point, scry 1."
+      }
+    ]
+  },
+  {
+    "name": "Security Camera",
+    "cost": "1 Bribery",
+    "effects": [
+      {
+        "id": "scry",
+        "amount": 1,
+        "text": "Once per turn, when a player gains an affiliation point, scry 1 and draw a card."
+      },
+      {
+        "id": "double_bribery_actions",
+        "text": "x2 Bribery Action Points"
+      }
+    ]
+  },
+  {
+    "name": "Turnstyle",
+    "cost": "1 Intimidation",
+    "effects": [
+      {
+        "id": "draw",
+        "amount": 2,
+        "text": "Once per turn, when a player draws a card, you may shuffle an ally into the person deck. If you do, draw 2 cards."
+      }
+    ]
+  },
+  {
+    "name": "Compost Bin ",
+    "cost": "1 Intimidation",
+    "effects": [
+      {
+        "id": "sacrifice_top_to_evidence_reduce_detection",
+        "text": "Once per turn, when a player discards a card, you may put the top card of the deck into evidence to reduce the detection counter 1."
+      }
+    ]
+  },
+  {
+    "name": "Shopping Bag",
+    "cost": "1 Intimidation",
+    "effects": [
+      {
+        "id": "draw_on_item_play",
+        "text": "Once per turn, when a player plays an item, draw a card."
+      }
+    ]
+  },
+  {
+    "name": "Carbon-fiber Road Bike",
+    "cost": "2 Bribery, 1 Deception",
+    "effects": [
+      {
+        "id": "draw",
+        "amount": 2,
+        "text": "Once per turn, when a player draws a card, you may pay an affiliation point. If you do, draw 2 cards."
+      }
+    ]
+  },
+  {
+    "name": "Trail Camera",
+    "cost": "1 Distraction, 2 Deception",
+    "effects": [
+      {
+        "id": "advance_detection_and_choice_on_discard",
+        "text": "Once per turn, when a player discards a card, advance the detection counter and each player draws a card or gains an affiliation."
+      }
+    ]
+  },
+  {
+    "name": "Wood Chipper",
+    "cost": "1 Bribery, 1 Intimidation",
+    "effects": [
+      {
+        "id": "sacrifice_item_reduce_detection",
+        "text": "Once per turn, when a player discards a card, you may sacrifice an item. If you do, reduce the detection counter by 1."
+      }
+    ]
+  },
+  {
+    "name": "Vanity Mirror",
+    "cost": "1 Distraction, 1 Bribery",
+    "effects": [
+      {
+        "id": "discard_on_affiliation_reduce_detection",
+        "text": "When a player gains an affiliation point, discard a card to reduce the detection counter 1"
+      },
+      {
+        "id": "double_distraction_actions",
+        "text": "x2 Distraction Action Points"
+      }
+    ]
+  },
+  {
+    "name": "Trusty Baseball Bat",
+    "cost": "2 Intimidation, 1 Deception",
+    "effects": [
+      {
+        "id": "affiliation",
+        "amount": 1,
+        "text": "Once per turn, when a player gains an affiliation point, gain an affiliation from among allies affiliations."
+      },
+      {
+        "id": "double_intimidation_actions",
+        "text": "x2 Intimidation Action Points"
+      }
+    ]
+  }
+]

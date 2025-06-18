@@ -27,25 +27,56 @@ function shuffle(arr){
 function createCardElement(card){
     const div = document.createElement('div');
     div.className = 'card';
-    div.innerHTML = `<div class="card-title">${card.name}</div><div class="card-body">${card.desc}</div>`;
+    if(card.type === 'person'){
+        const parts = [];
+        if(card.avoid){
+            if(card.avoid.cost) parts.push(`<div class="cost">${card.avoid.cost}</div>`);
+            (card.avoid.effects || []).forEach(e=>parts.push(`<div class="effect">${e.text}</div>`));
+        }
+        if(card.reward){
+            if(card.reward.cost) parts.push(`<div class="cost">${card.reward.cost}</div>`);
+            (card.reward.effects || []).forEach(e=>parts.push(`<div class="effect">${e.text}</div>`));
+        }
+        div.innerHTML = `<div class="card-title">${card.name}</div><div class="card-body">${parts.join('')}</div>`;
+    } else {
+        const parts = [];
+        if(card.cost){
+            parts.push(`<div class="cost">${card.cost}</div>`);
+        }
+        const lines = card.effects ? card.effects.map(e=>e.text) : (card.desc ? card.desc.split('<br>') : []);
+        lines.forEach(l=>parts.push(`<div class="effect">${l}</div>`));
+        div.innerHTML = `<div class="card-title">${card.name}</div><div class="card-body">${parts.join('')}</div>`;
+    }
     return div;
 }
 
-function parseDeck(text){
-    return text.trim().split(/\n\s*\n/).map(chunk=>{
-        const lines = chunk.trim().split(/\n/);
-        return {name: lines[0], desc: lines.slice(1).join('<br>')};
-    });
+function getCardText(card){
+    if(card.type === 'person'){
+        const parts = [];
+        if(card.avoid){
+            if(card.avoid.cost) parts.push(card.avoid.cost);
+            if(card.avoid.effects) parts.push(...card.avoid.effects.map(e=>e.text));
+        }
+        if(card.reward){
+            if(card.reward.cost) parts.push(card.reward.cost);
+            if(card.reward.effects) parts.push(...card.reward.effects.map(e=>e.text));
+        }
+        return parts.join(' ');
+    }
+    const parts = [];
+    if(card.cost) parts.push(card.cost);
+    if(card.effects) parts.push(...card.effects.map(e=>e.text));
+    if(card.desc) parts.push(card.desc);
+    return parts.join(' ');
 }
 
 function loadDeck(file, target){
-    fetch(file).then(r=>r.text()).then(text=>{
-        const deck = parseDeck(text);
+    fetch(file).then(r=>r.json()).then(deck=>{
         shuffle(deck);
-        if(target==='map'){mapDeck=deck;updateCount('map',mapDeck.length);} 
-        if(target==='people'){peopleDeck=deck;updateCount('people',peopleDeck.length);} 
-        if(target==='items'){itemsDeck=deck;updateCount('items',itemsDeck.length);} 
-        if(target==='actions'){actionsDeck=deck;updateCount('actions',actionsDeck.length);} 
+        if(target==='map'){mapDeck=deck;updateCount('map',mapDeck.length);}
+        if(target==='people'){peopleDeck=deck;updateCount('people',peopleDeck.length);}
+        if(target==='items'){itemsDeck=deck;updateCount('items',itemsDeck.length);}
+        if(target==='actions'){actionsDeck=deck;updateCount('actions',actionsDeck.length);}
     });
 }
 
@@ -93,7 +124,7 @@ function drawCard(deck,name){
     area.appendChild(createCardElement(card));
     updateCount(name, deck.length);
 
-    const match = card.desc.match(/(-?\d+)\s*Detection/i);
+    const match = getCardText(card).match(/(-?\d+)\s*Detection/i);
     if(match){
         adjustDetection(parseInt(match[1],10));
     }
@@ -139,7 +170,7 @@ function selectMapCard(i){
     const card = mapTray.splice(i,1)[0];
     addMapToBoard(card);
     fillMapTray();
-    parseMapEffects(card.desc);
+    parseMapEffects(card);
     turnPhase = 'resolveMap';
     nextAction();
 }
@@ -147,7 +178,7 @@ function selectMapCard(i){
 function addMapToBoard(card){
     const board = document.getElementById('map-board');
     board.appendChild(createCardElement(card));
-    const match = card.desc.match(/(-?\d+)\s*Detection/i);
+    const match = getCardText(card).match(/(-?\d+)\s*Detection/i);
     if(match){
         adjustDetection(parseInt(match[1],10));
     }
@@ -155,6 +186,96 @@ function addMapToBoard(card){
 
 function enqueueAction(text, fn){
     actionQueue.push({text, fn});
+}
+
+const effectHandlers = {
+    detection:(e,idx)=>enqueueAction(e.text,()=>adjustDetection(e.amount)),
+    affiliation:(e,idx)=>enqueueAction(e.text,()=>changeAffiliation(idx,e.amount)),
+    draw:(e,idx)=>enqueueAction(e.text,()=>{for(let i=0;i<e.amount;i++) drawFromPlayerDeck(idx);}),
+    gain_action_point:(e)=>enqueueAction(e.text,()=>{actionsLeft += e.amount; updateTurnInfo();}),
+    scry:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    flip:(e)=>enqueueAction(e.text,()=>flipPerson(e.amount)),
+    draw_or_affiliation:()=>enqueueAction('Draw 1 card or gain 1 affiliation',()=>drawOrAffiliation()),
+    gain_distraction:(e,idx)=>enqueueAction(e.text,()=>alert(`${players[idx].name} gains ${e.amount} Distraction`)),
+    gain_intimidation:(e,idx)=>enqueueAction(e.text,()=>alert(`${players[idx].name} gains ${e.amount} Intimidation`)),
+    gain_deception:(e,idx)=>enqueueAction(e.text,()=>alert(`${players[idx].name} gains ${e.amount} Deception`)),
+    gain_bribery:(e,idx)=>enqueueAction(e.text,()=>alert(`${players[idx].name} gains ${e.amount} Bribery`)),
+    gain_distraction_or_intimidation:(e,idx)=>enqueueAction(e.text,()=>alert(e.text)),
+    gain_two_affiliation:(e,idx)=>enqueueAction(e.text,()=>changeAffiliation(idx,2)),
+    least_affiliation_gain:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    most_affiliation_draw:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    ignore_person_requirements:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    trigger_person_effect:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    trigger_map_card_effect:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    reduce_detection_draw_person:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    play_action_from_evidence:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    play_item_from_evidence:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    recover_from_discard:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    return_evidence:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    drop_item_draw_two:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    target_draw:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    bump_and_choice:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    discard_then_draw_all:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    discard_all:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    witness_penalty_discard:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    discard_item_optional_draw:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    discard_on_affiliation_reduce_detection:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    discard_reduce_detection_on_item_play:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    draw_then_discard_on_affiliation:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    pay_affiliation_reduce_detection_on_item_play:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    pay_affiliation_reduce_detection_on_ally:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    peek_item_into_hand:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    bottom_map_card:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    shuffle_evidence:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    pass_left:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    trade_cards_affiliation:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    trade_cards_with_players:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    each_gain_affiliation:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    advance_detection_all_gain_distraction:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    advance_detection_and_choice_on_discard:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    sacrifice_item_reduce_detection:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    sacrifice_top_to_evidence_reduce_detection:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    draw_on_item_play:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    target_draw_aff:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    turn_ally:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    default:(e)=>enqueueAction(e.text,()=>alert(e.text))
+};
+
+function runEffect(effect, playerIdx){
+    const handler = effectHandlers[effect.id] || effectHandlers.default;
+    handler(effect, playerIdx);
+}
+
+function askPlayersToPay(cost){
+    for(let i=0;i<players.length;i++){
+        const idx = (currentPlayerIndex + i) % players.length;
+        if(confirm(`${players[idx].name}: Pay cost "${cost}"?`)){
+            return idx;
+        }
+    }
+    return null;
+}
+
+function handlePersonCard(card){
+    const avoidCost = card.avoid && card.avoid.cost ? card.avoid.cost.trim() : '';
+    const avoidEffects = (card.avoid && card.avoid.effects) ? card.avoid.effects : [];
+    let avoidIdx = null;
+    if(avoidCost){
+        avoidIdx = askPlayersToPay(avoidCost);
+    }
+    if(avoidIdx === null){
+        avoidEffects.forEach(e=>runEffect(e, currentPlayerIndex));
+    }
+
+    const rewardCost = card.reward && card.reward.cost ? card.reward.cost.trim() : '';
+    const rewardEffects = (card.reward && card.reward.effects) ? card.reward.effects : [];
+    let rewardIdx = null;
+    if(rewardCost){
+        rewardIdx = askPlayersToPay(rewardCost);
+    }
+    if(rewardIdx !== null){
+        rewardEffects.forEach(e=>runEffect(e, rewardIdx));
+    }
 }
 
 function nextAction(){
@@ -182,10 +303,7 @@ function flipPerson(count){
                 break;
             }
         }
-        const match = card.desc.match(/(-?\d+)\s*Detection/i);
-        if(match){
-            adjustDetection(parseInt(match[1],10));
-        }
+        handlePersonCard(card);
     }
 }
 
@@ -204,32 +322,16 @@ function drawOrAffiliation(){
     }
 }
 
-function parseMapEffects(desc){
-    const lines = desc.split('<br>').map(l=>l.trim()).filter(l=>l);
-    lines.forEach(line=>{
-        let m;
-        if((m=line.match(/Flip\s*(\d+)/i))){
-            const n=parseInt(m[1],10);
-            enqueueAction(line,()=>flipPerson(n));
-        }else if(/Draw\s*1\s*or\s*Gain\s*1\s*Affiliation/i.test(line)){
-            enqueueAction(line,()=>drawOrAffiliation());
-        }else if((m=line.match(/Gain\s*(\d+)\s*Affiliation/i))||(m=line.match(/Get\s*(\d+)\s*Affiliation/i))){
-            const n=parseInt(m[1],10);
-            enqueueAction(line,()=>changeAffiliation(currentPlayerIndex,n));
-        }else if((m=line.match(/Draw\s*(\d+)/i))){
-            const n=parseInt(m[1],10);
-            enqueueAction(line,()=>{for(let i=0;i<n;i++) drawFromPlayerDeck(currentPlayerIndex);});
-        }else{
-            enqueueAction(line,()=>alert(line));
-        }
-    });
+function parseMapEffects(card){
+    const effects = card.effects || (card.desc.split("<br>").map(t=>({id:"custom",text:t})));
+    effects.forEach(e=>runEffect(e, currentPlayerIndex));
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
-    loadDeck('map.txt','map');
-    loadDeck('people.txt','people');
-    loadDeck('items.txt','items');
-    loadDeck('actions.txt','actions');
+    loadDeck('map.json','map');
+    loadDeck('people.json','people');
+    loadDeck('items.json','items');
+    loadDeck('actions.json','actions');
     fetch('rules.txt').then(r=>r.text()).then(t=>{
         document.getElementById('rules-text').textContent=t;
     });

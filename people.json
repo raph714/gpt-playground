@@ -1,0 +1,478 @@
+[
+  {
+    "type": "person",
+    "name": "Banessica Murphries",
+    "avoid": {
+      "cost": "1 Deception, 1 Distraction",
+      "effects": [
+        {
+          "id": "detection",
+          "amount": 1,
+          "text": "1 Detection. If Banessica becomes a witness, flip 1 person."
+        }
+      ]
+    },
+    "reward": {
+      "cost": "2 Intimidate, 4 Bribe",
+      "effects": [
+        {
+          "id": "draw",
+          "amount": 2,
+          "text": "Draw 2 cards, then put 1 into your Cache and the other on the bottom of the deck."
+        }
+      ]
+    }
+  },
+  {
+    "type": "person",
+    "name": "Phil Ploe",
+    "avoid": {
+      "cost": "4 Distraction or Deception",
+      "effects": [
+        {
+          "id": "detection",
+          "amount": 2,
+          "text": "2 Detection"
+        }
+      ]
+    },
+    "reward": {
+      "cost": "1 Bribe",
+      "effects": [
+        {
+          "id": "draw",
+          "amount": 2,
+          "text": "Draw 2 cards, then put 1 into your Cache and the other on the bottom of the deck."
+        }
+      ]
+    }
+  },
+  {
+    "type": "person",
+    "name": "J.J. Millsap",
+    "avoid": {
+      "cost": "1 Deception, 1 Distraction",
+      "effects": [
+        {
+          "id": "detection",
+          "amount": 3,
+          "text": "3 Detection"
+        }
+      ]
+    },
+    "reward": {
+      "cost": "1 Bribe, 1 Intimidate",
+      "effects": [
+        {
+          "id": "draw",
+          "amount": 1,
+          "text": "Player with least cards in hand draw 1."
+        },
+        {
+          "id": "draw",
+          "amount": 2,
+          "text": "Draw 2 cards, then put 1 into your Cache and the other on the bottom of the deck."
+        }
+      ]
+    }
+  },
+  {
+    "type": "person",
+    "name": "Quentarious Smith",
+    "avoid": {
+      "cost": "4 Distract",
+      "effects": [
+        {
+          "id": "detection",
+          "amount": 1,
+          "text": "1 Detection"
+        }
+      ]
+    },
+    "reward": {
+      "cost": "1 Intimidate",
+      "effects": [
+        {
+          "id": "least_affiliation_gain",
+          "text": "Player with least affiliation gains 1."
+        },
+        {
+          "id": "draw",
+          "amount": 2,
+          "text": "Draw 2 cards, then put 1 into your Cache and the other on the bottom of the deck."
+        }
+      ]
+    }
+  },
+  {
+    "type": "person",
+    "name": "Uncle Johnson I",
+    "avoid": {
+      "cost": "4 Distraction",
+      "effects": [
+        {
+          "id": "detection",
+          "amount": 1,
+          "text": "1 Detection"
+        }
+      ]
+    },
+    "reward": {
+      "cost": "5 Intimidation/Bribery",
+      "effects": [
+        {
+          "id": "affiliation",
+          "amount": -1,
+          "text": "If Uncle becomes a witness, all players lose 1 affiliation."
+        },
+        {
+          "id": "draw",
+          "amount": 2,
+          "text": "Draw 2 cards, then put 1 into your Cache and the other on the bottom of the deck."
+        }
+      ]
+    }
+  },
+  {
+    "type": "person",
+    "name": "Vanessa Salmon",
+    "avoid": {
+      "cost": "4 Distraction",
+      "effects": [
+        {
+          "id": "detection",
+          "amount": 1,
+          "text": "1 Detection"
+        }
+      ]
+    },
+    "reward": {
+      "cost": "5 Intimidation",
+      "effects": [
+        {
+          "id": "discard_then_draw_all",
+          "text": "All players discard a card, then draw a card."
+        },
+        {
+          "id": "witness_penalty_discard",
+          "text": "If Vanessa becomes a witness, 1 player must discard a card."
+        }
+      ]
+    }
+  },
+  {
+    "type": "person",
+    "name": "Craig Plompernickle",
+    "avoid": {
+      "cost": "4 Distraction",
+      "effects": [
+        {
+          "id": "detection",
+          "amount": 1,
+          "text": "1 Detection"
+        }
+      ]
+    },
+    "reward": {
+      "cost": "3 Intimidation, 2 Bribery",
+      "effects": [
+        {
+          "id": "discard_all",
+          "text": "All players discard a card."
+        },
+        {
+          "id": "draw",
+          "amount": 2,
+          "text": "Draw 2 cards, then put 1 into your Cache and the other on the bottom of the deck."
+        }
+      ]
+    }
+  },
+  {
+    "type": "person",
+    "name": "Iris Geranium",
+    "avoid": {
+      "cost": "4 Distraction/Deception",
+      "effects": [
+        {
+          "id": "detection",
+          "amount": 1,
+          "text": "1 Detection"
+        }
+      ]
+    },
+    "reward": {
+      "cost": "3 Intimidation, 2 Bribery",
+      "effects": [
+        {
+          "id": "most_affiliation_draw",
+          "text": "Player with the most Affiliation draw a card."
+        },
+        {
+          "id": "draw",
+          "amount": 2,
+          "text": "Draw 2 cards, then put 1 into your Cache and the other on the bottom of the deck."
+        }
+      ]
+    }
+  },
+  {
+    "type": "person",
+    "name": "Yousef Brambler",
+    "avoid": {
+      "cost": "3 Distraction",
+      "effects": [
+        {
+          "id": "detection",
+          "amount": 1,
+          "text": "1 Detection. Each player discards a card."
+        }
+      ]
+    },
+    "reward": {
+      "cost": "5 Intimidation",
+      "effects": [
+        {
+          "id": "affiliation",
+          "amount": 1,
+          "text": "Gain an Affiliation. Each player discards up to 3 cards and draws that many cards."
+        }
+      ]
+    }
+  },
+  {
+    "type": "person",
+    "name": "Eric Dobben",
+    "avoid": {
+      "cost": "2 Deception",
+      "effects": [
+        {
+          "id": "detection",
+          "amount": 1,
+          "text": "1 Detection"
+        }
+      ]
+    },
+    "reward": {
+      "cost": "Trigger all previous witness effects in order.",
+      "effects": [
+        {
+          "id": "gain_bribery",
+          "amount": 5,
+          "text": "5 Bribery"
+        },
+        {
+          "id": "affiliation",
+          "amount": 1,
+          "text": "Gain an Affiliation. Each player gains an affiliation."
+        }
+      ]
+    }
+  },
+  {
+    "type": "person",
+    "name": "Mary Mousse-Ablebottom",
+    "avoid": {
+      "cost": "4 Deception/Distraction",
+      "effects": [
+        {
+          "id": "detection",
+          "amount": 1,
+          "text": "1 Detection"
+        }
+      ]
+    },
+    "reward": {
+      "cost": "3 Intimidation, 2 Bribery",
+      "effects": [
+        {
+          "id": "affiliation",
+          "amount": 1,
+          "text": "Gain an Affiliation. Each player draws a card and discards a card."
+        }
+      ]
+    }
+  },
+  {
+    "type": "person",
+    "name": "Doug Ablebottom",
+    "avoid": {
+      "cost": "4 Distraction",
+      "effects": [
+        {
+          "id": "detection",
+          "amount": 1,
+          "text": "1 Detection. Each player passes a random card to the left."
+        }
+      ]
+    },
+    "reward": {
+      "cost": "5 Intimidation",
+      "effects": [
+        {
+          "id": "affiliation",
+          "amount": 1,
+          "text": "Gain an Affiliation. Each player reveals their hand. Trades are free for the rest of the turn."
+        }
+      ]
+    }
+  },
+  {
+    "type": "person",
+    "name": "Erika “Sunshine” Stinkfoot",
+    "avoid": {
+      "cost": "4 Distraction",
+      "effects": [
+        {
+          "id": "detection",
+          "amount": 1,
+          "text": "1 Detection. Each player discards a card or affiliation."
+        }
+      ]
+    },
+    "reward": {
+      "cost": "4 Bribery",
+      "effects": [
+        {
+          "id": "affiliation",
+          "amount": 1,
+          "text": "Gain 1 affiliation. Each player draws a card and gains 1 affiliation."
+        }
+      ]
+    }
+  },
+  {
+    "type": "person",
+    "name": "Ricardo Lapham",
+    "avoid": {
+      "cost": "2 Deception, 3 Distraction",
+      "effects": [
+        {
+          "id": "detection",
+          "amount": 1,
+          "text": "1 Detection"
+        }
+      ]
+    },
+    "reward": {
+      "cost": "2 Intimidation/ 2 Bribery",
+      "effects": [
+        {
+          "id": "discard_item_optional_draw",
+          "text": "All players must discard 1 item, if they have it. All players may draw a card."
+        },
+        {
+          "id": "draw",
+          "amount": 2,
+          "text": "Draw 2 cards, then put 1 into your Cache and the other on the bottom of the deck."
+        }
+      ]
+    }
+  },
+  {
+    "type": "person",
+    "name": "Chord Michaelson Jr.",
+    "avoid": {
+      "cost": "4 Distraction",
+      "effects": [
+        {
+          "id": "detection",
+          "amount": 1,
+          "text": "1 Detection. Each player loses 1 Affiliation."
+        }
+      ]
+    },
+    "reward": {
+      "cost": "5 Bribery",
+      "effects": [
+        {
+          "id": "draw",
+          "amount": 2,
+          "text": "Draw 2 cards, then put 1 into your Cache and the other on the bottom of the deck."
+        }
+      ]
+    }
+  },
+  {
+    "type": "person",
+    "name": "Sissy McGibbons",
+    "avoid": {
+      "cost": "2 Deception, 2 Distraction",
+      "effects": [
+        {
+          "id": "detection",
+          "amount": 1,
+          "text": "1 Detection"
+        }
+      ]
+    },
+    "reward": {
+      "cost": "5 Intimidation",
+      "effects": [
+        {
+          "id": "affiliation",
+          "amount": 2,
+          "text": "You may discard a card and draw a card. All players draw a card and gain 2 Affiliation"
+        }
+      ]
+    }
+  },
+  {
+    "type": "person",
+    "name": "Gabe Bagletone",
+    "avoid": {
+      "cost": "1 Deception each witness in play",
+      "effects": [
+        {
+          "id": "detection",
+          "amount": 1,
+          "text": "1 Detection. Each player lose 1 Affiliation."
+        }
+      ]
+    },
+    "reward": {
+      "cost": "4 Intimidation",
+      "effects": [
+        {
+          "id": "draw",
+          "amount": 2,
+          "text": "Draw 2 cards, then put 1 into your Cache and the other on the bottom of the deck."
+        },
+        {
+          "id": "affiliation",
+          "amount": 1,
+          "text": "Gain 1 affiliation. Players may discard 1 card to gain 1 Affiliation."
+        }
+      ]
+    }
+  },
+  {
+    "type": "person",
+    "name": "Namkita Param",
+    "avoid": {
+      "cost": "3 Distraction",
+      "effects": [
+        {
+          "id": "detection",
+          "amount": 1,
+          "text": "1 Detection"
+        }
+      ]
+    },
+    "reward": {
+      "cost": "5 Bribery",
+      "effects": [
+        {
+          "id": "draw",
+          "amount": 2,
+          "text": "Draw 2 cards, then put 1 into your Cache and the other on the bottom of the deck."
+        },
+        {
+          "id": "affiliation",
+          "amount": 1,
+          "text": "All players gain 1 affiliation."
+        }
+      ]
+    }
+  }
+]
