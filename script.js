@@ -175,6 +175,7 @@ function getActionPointCost(cost){
 function createHandCardElement(card, playerIdx){
     const div = createCardElement(card);
     div.classList.add('selectable');
+    div.setAttribute('data-card-index', playerIdx);
     div.addEventListener('click', () => {
         if (!div.classList.contains('selected')) {
             div.classList.add('selected');
@@ -183,6 +184,63 @@ function createHandCardElement(card, playerIdx){
         }
     });
     return div;
+}
+
+async function playSelectedCards(playerIdx) {
+    if(playerIdx !== currentPlayerIndex) return; // Ensure it's the current player's turn
+    if(turnPhase !== 'playerActions') return; // Ensure the player is in the correct phase
+
+    const area = handAreas[playerIdx];
+    const selectedElements = area.querySelectorAll('.game-card.selected');
+    if(selectedElements.length === 0) return;
+
+    // Calculate total action point cost
+    let totalCost = 0;
+    const cardsToPlay = [];
+    const elementsToRemove = [];
+
+    selectedElements.forEach(element => {
+        const player = players[playerIdx];
+        const cardIndex = Array.from(area.children).indexOf(element);
+        const card = player.hand[cardIndex];
+        if(card) {
+            totalCost += getActionPointCost(card.cost || '');
+            cardsToPlay.push({card, element});
+            elementsToRemove.push({element, cardIndex});
+        }
+    });
+
+    if(totalCost > actionsLeft){
+        showMessage('Not enough action points to play selected cards!');
+        return;
+    }
+
+    // Play all cards
+    for(const {card, element} of cardsToPlay) {
+        actionsLeft -= getActionPointCost(card.cost || '');
+        updateTurnInfo();
+
+        const player = players[playerIdx];
+        const cardIndex = player.hand.indexOf(card);
+        if(cardIndex !== -1) player.hand.splice(cardIndex, 1);
+        element.remove();
+        player.discard.push(card);
+
+        // Apply card effects
+        const effects = card.effects || (card.desc.split('<br>').map(text => ({ id: 'custom', text })));
+        for(const effect of effects) {
+            await runEffect(effect, playerIdx);
+        }
+    }
+
+    updatePlayerDeckInfo(playerIdx);
+
+    // Check if the turn should proceed to the next phase
+    if(actionsLeft <= 0){
+        showMessage('No actions left! End your turn.');
+        turnPhase = 'resolveMap';
+        nextAction();
+    }
 }
 
 function playHandCard(playerIdx, card, element){
@@ -582,4 +640,13 @@ document.addEventListener('DOMContentLoaded',()=>{
     document.querySelector('[data-action="draw-person"]').addEventListener('click',()=>drawCard(peopleDeck,'people'));
     document.querySelector('[data-action="draw-item"]').addEventListener('click',()=>drawCard(itemsDeck,'items'));
     document.querySelector('[data-action="draw-action"]').addEventListener('click',()=>drawCard(actionsDeck,'actions'));
+
+    for(let i=1;i<=4;i++){
+        const area = document.getElementById('player'+i+'-area');
+        const playBtn = document.createElement('button');
+        playBtn.textContent = 'Play Selected';
+        playBtn.className = 'btn btn-primary btn-sm mt-2';
+        playBtn.addEventListener('click', () => playSelectedCards(i-1));
+        area.appendChild(playBtn);
+    }
 });
