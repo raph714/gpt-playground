@@ -14,12 +14,20 @@ export class UI {
         if (element) element.textContent = text;
     }
 
-    static showMessage(text) {
+    static showMessage(text, isError = false) {
         const msgEl = document.getElementById('game-messages');
         if (!msgEl) return;
         const div = document.createElement('div');
         div.textContent = text;
+        if (isError) div.style.color = '#dc3545'; // Bootstrap danger color
         msgEl.appendChild(div);
+        // Auto-scroll to bottom
+        msgEl.scrollTop = msgEl.scrollHeight;
+    }
+
+    static clearMessages() {
+        const msgEl = document.getElementById('game-messages');
+        if (msgEl) msgEl.innerHTML = '';
     }
 
     static showInstruction(text) {

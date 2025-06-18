@@ -8,13 +8,40 @@ import { MapManager } from './map-manager.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        // Load game decks
-        await GameManager.loadDecks();
+        console.log('Starting game initialization...');
+        UI.clearMessages(); // Clear any previous messages
 
-        // Load rules (relative to index.html location)
-        const rulesResponse = await fetch('rules.txt');
-        const rulesText = await rulesResponse.text();
-        document.getElementById('rules-text').textContent = rulesText;
+        // Load game decks first and wait for them to complete
+        UI.showMessage('Loading game decks...');
+        await DeckManager.loadDecks();
+
+        // Verify all decks were loaded
+        if (!DeckState.mapDeck.length && !DeckState.peopleDeck.length && 
+            !DeckState.itemsDeck.length && !DeckState.actionsDeck.length) {
+            UI.showMessage('Error: Failed to load any game decks. Please check console for details.', true);
+            return;
+        }
+
+        // Show which decks were loaded successfully
+        console.log('Loaded decks:', {
+            map: DeckState.mapDeck.length,
+            people: DeckState.peopleDeck.length,
+            items: DeckState.itemsDeck.length,
+            actions: DeckState.actionsDeck.length
+        });
+
+        // Load rules
+        try {
+            const rulesResponse = await fetch('rules.txt');
+            if (!rulesResponse.ok) {
+                throw new Error(`HTTP error! status: ${rulesResponse.status}`);
+            }
+            const rulesText = await rulesResponse.text();
+            document.getElementById('rules-text').textContent = rulesText;
+        } catch (rulesError) {
+            console.error('Failed to load rules:', rulesError);
+            UI.showMessage('Warning: Failed to load rules text.', true);
+        }
 
         // Setup detection counter controls
         document.getElementById('inc-detection').addEventListener('click', () => {
@@ -31,8 +58,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                 setupGameButtons();
             }
         });
+
+        UI.showMessage('Game initialization completed successfully');
+        console.log('Game initialization completed');
     } catch (error) {
-        console.error('Error during initialization:', error);
+        console.error('Critical error during initialization:', error);
+        UI.showMessage('Critical error during game initialization. Check console for details.', true);
     }
 });
 

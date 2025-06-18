@@ -7,14 +7,24 @@ export class DeckManager {
     static async loadDecks() {
         const loadDeck = async (file, target) => {
             try {
-                // Paths are relative to index.html location
+                console.log(`Loading ${file}...`);
                 const response = await fetch(file);
-                const deck = await response.json();
-                CardUtils.shuffle(deck);
-                DeckState[target] = deck;
-                UI.updateCounter(target, deck.length);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const text = await response.text();
+                try {
+                    const deck = JSON.parse(text);
+                    CardUtils.shuffle(deck);
+                    DeckState[target] = deck;
+                    UI.updateCounter(target, deck.length);
+                    console.log(`Successfully loaded ${file} with ${deck.length} cards`);
+                } catch (parseError) {
+                    console.error(`Failed to parse ${file}:`, parseError);
+                    UI.showMessage(`Failed to parse ${file}. Check console for details.`);
+                }
             } catch (err) {
-                console.error(`Error loading deck ${file}:`, err);
+                console.error(`Failed to load ${file}:`, err);
                 UI.showMessage(`Failed to load ${file}. Check console for details.`);
             }
         };
