@@ -42,6 +42,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             actions: DeckState.actionsDeck.length
         });
 
+        UI.updateCounter('map', DeckState.mapDeck.length);
+        UI.updateCounter('people', DeckState.peopleDeck.length);
+        UI.updateCounter('items', DeckState.itemsDeck.length);
+        UI.updateCounter('actions', DeckState.actionsDeck.length);
+
         // Load rules
         try {
             const rulesResponse = await fetch('rules.txt');
