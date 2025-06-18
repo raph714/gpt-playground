@@ -4,29 +4,33 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Board Game Helper</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1>Board Game Helper</h1>
-<section id="setup">
+<div class="container-fluid">
+<h1 class="text-center my-3">Board Game Helper</h1>
+<section id="setup" class="mb-3">
     <h2>Players</h2>
-    <input type="text" id="player1" placeholder="Player 1">
-    <input type="text" id="player2" placeholder="Player 2">
-    <input type="text" id="player3" placeholder="Player 3">
-    <input type="text" id="player4" placeholder="Player 4">
-    <button id="start-game">Start Game</button>
+    <div class="row g-2 mb-2">
+        <div class="col-sm-6 col-md-3"><input type="text" id="player1" placeholder="Player 1" class="form-control"></div>
+        <div class="col-sm-6 col-md-3"><input type="text" id="player2" placeholder="Player 2" class="form-control"></div>
+        <div class="col-sm-6 col-md-3"><input type="text" id="player3" placeholder="Player 3" class="form-control"></div>
+        <div class="col-sm-6 col-md-3"><input type="text" id="player4" placeholder="Player 4" class="form-control"></div>
+    </div>
+    <button id="start-game" class="btn btn-primary">Start Game</button>
 </section>
 
-<section id="turn-info" style="display:none;">
+<section id="turn-info" style="display:none;" class="mb-3">
     <h2>Current Player: <span id="current-player"></span></h2>
     <p>Actions left: <span id="actions-left">3</span></p>
-    <div id="action-info" style="display:none;">
-        <p id="current-action"></p>
-        <button id="resolve-action">Resolve Action</button>
+    <div id="action-info" style="display:none;" class="my-2">
+        <p id="current-action" class="fw-bold"></p>
+        <button id="resolve-action" class="btn btn-success btn-sm">Resolve Action</button>
     </div>
-    <button id="end-turn">End Turn</button>
+    <button id="end-turn" class="btn btn-secondary">End Turn</button>
 </section>
-<div id="board" style="display:none;">
+<div id="board" style="display:none;" class="mb-3">
     <div id="player1-area" class="player-area">
         <h3 class="player-name" id="player1-name"></h3>
         <p>Affiliation: <span class="affiliation" id="aff1">0</span></p>
@@ -47,18 +51,18 @@
         <p>Affiliation: <span class="affiliation" id="aff4">0</span></p>
         <div class="hand" id="hand4"></div>
     </div>
-    <div id="center-area">
-        <div id="person-slots">
+    <div id="center-area" class="text-center">
+        <div id="person-slots" class="d-flex justify-content-center flex-wrap mb-2">
             <div class="person-slot"></div>
             <div class="person-slot"></div>
             <div class="person-slot"></div>
             <div class="person-slot"></div>
             <div class="person-slot"></div>
         </div>
-        <div id="counter">
+        <div id="counter" class="my-2">
             <h2>Detection Counter: <span id="detection-value">0</span></h2>
-            <button id="inc-detection">+1</button>
-            <button id="dec-detection">-1</button>
+            <button id="inc-detection" class="btn btn-danger btn-sm">+1</button>
+            <button id="dec-detection" class="btn btn-success btn-sm">-1</button>
         </div>
         <div id="map-tray" class="tray"></div>
         <div class="deck" id="map-deck">
@@ -66,15 +70,15 @@
         </div>
         <div class="deck" id="people-deck">
             <h2>People Deck (<span id="people-count">0</span>)</h2>
-            <button data-action="draw-person">Draw Person Card</button>
+            <button data-action="draw-person" class="btn btn-outline-primary btn-sm">Draw Person Card</button>
         </div>
         <div class="deck" id="items-deck">
             <h2>Items Deck (<span id="items-count">0</span>)</h2>
-            <button data-action="draw-item">Draw Item Card</button>
+            <button data-action="draw-item" class="btn btn-outline-primary btn-sm">Draw Item Card</button>
         </div>
         <div class="deck" id="actions-deck">
             <h2>Actions Deck (<span id="actions-count">0</span>)</h2>
-            <button data-action="draw-action">Draw Action Card</button>
+            <button data-action="draw-action" class="btn btn-outline-primary btn-sm">Draw Action Card</button>
         </div>
         <div id="map-board" class="board-area"></div>
     </div>
@@ -84,5 +88,6 @@
 <pre id="rules-text"></pre>
 </section>
 <script src="script.js"></script>
+</div>
 </body>
 </html>

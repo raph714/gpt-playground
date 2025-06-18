@@ -26,7 +26,7 @@ function shuffle(arr){
 
 function createCardElement(card){
     const div = document.createElement('div');
-    div.className = 'card';
+    div.className = 'game-card';
     if(card.type === 'person'){
         const parts = [];
         if(card.avoid){
@@ -37,7 +37,7 @@ function createCardElement(card){
             if(card.reward.cost) parts.push(`<div class="cost">${card.reward.cost}</div>`);
             (card.reward.effects || []).forEach(e=>parts.push(`<div class="effect">${e.text}</div>`));
         }
-        div.innerHTML = `<div class="card-title">${card.name}</div><div class="card-body">${parts.join('')}</div>`;
+        div.innerHTML = `<div class="game-card-title">${card.name}</div><div class="game-card-body">${parts.join('')}</div>`;
     } else {
         const parts = [];
         if(card.cost){
@@ -45,7 +45,7 @@ function createCardElement(card){
         }
         const lines = card.effects ? card.effects.map(e=>e.text) : (card.desc ? card.desc.split('<br>') : []);
         lines.forEach(l=>parts.push(`<div class="effect">${l}</div>`));
-        div.innerHTML = `<div class="card-title">${card.name}</div><div class="card-body">${parts.join('')}</div>`;
+        div.innerHTML = `<div class="game-card-title">${card.name}</div><div class="game-card-body">${parts.join('')}</div>`;
     }
     return div;
 }

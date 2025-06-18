@@ -1,15 +1,20 @@
+html, body {
+    height: 100%;
+}
 body {
     font-family: Arial, sans-serif;
-    margin: 20px;
-    background: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+    background: #f8f9fa;
 }
 .deck {
     margin: 10px;
     padding: 10px;
     background: #fff;
     border: 1px solid #ccc;
+    border-radius: 4px;
 }
-.card {
+.game-card {
     width: 100px;
     height: 150px;
     border: 2px solid #333;
@@ -22,12 +27,14 @@ body {
     flex-direction: column;
     justify-content: space-between;
 }
-.card-title {
+
+.game-card-title {
     font-weight: bold;
     text-align: center;
     margin-bottom: 5px;
 }
-.card-body {
+
+.game-card-body {
     font-size: 0.8em;
     text-align: center;
 }
@@ -39,10 +46,6 @@ button {
     margin-bottom: 20px;
 }
 
-#setup input {
-    margin-right: 5px;
-    margin-bottom: 5px;
-}
 
 #board {
     display: grid;
@@ -54,6 +57,8 @@ button {
         "p3 . p4";
     gap: 10px;
     margin-top: 20px;
+    height: 70vh;
+    overflow-y: auto;
 }
 
 #player1-area { grid-area: p1; }
