@@ -13,6 +13,9 @@ export class EffectManager {
         draw: (e, idx) => this.enqueueAction(e.text, () => {
             for (let i = 0; i < e.amount; i++) DeckManager.drawFromPlayerDeck(idx);
         }),
+        each_gain_affiliation: (e) => enqueueAction(e.text, () => {
+            players.forEach((p, idx) => changeAffiliation(idx, 1));
+        }),
         gain_action_point: (e) => this.enqueueAction(e.text, () => {
             GameState.actionsLeft += e.amount;
             UI.updateTurnInfo();
