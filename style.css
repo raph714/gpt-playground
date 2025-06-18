@@ -15,8 +15,8 @@ body {
     border-radius: 4px;
 }
 .game-card {
-    width: 100px;
-    height: 150px;
+    width: 120px;
+    height: 180px;
     border: 2px solid #333;
     border-radius: 8px;
     padding: 10px;
@@ -37,6 +37,9 @@ body {
 .game-card-body {
     font-size: 0.8em;
     text-align: center;
+    overflow-y: auto;
+    word-break: break-word;
+    flex-grow: 1;
 }
 button {
     margin-right: 5px;
@@ -101,6 +104,11 @@ button {
     flex-wrap: wrap;
     justify-content: center;
     margin-top: 5px;
+}
+
+.deck-info {
+    font-size: 0.8em;
+    margin-bottom: 4px;
 }
 
 .cost {

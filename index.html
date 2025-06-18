@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="container-fluid">
-<h1 class="text-center my-3">Board Game Helper</h1>
+<!-- Title removed per new layout -->
 <section id="setup" class="mb-3">
     <h2>Players</h2>
     <div class="row g-2 mb-2">
@@ -22,8 +22,7 @@
 </section>
 
 <section id="turn-info" style="display:none;" class="mb-3">
-    <h2>Current Player: <span id="current-player"></span></h2>
-    <p>Actions left: <span id="actions-left">3</span></p>
+    <p class="m-0"><strong>Current Player:</strong> <span id="current-player"></span> – <strong>Actions left:</strong> <span id="actions-left">3</span></p>
     <div id="action-info" style="display:none;" class="my-2">
         <p id="current-action" class="fw-bold"></p>
         <button id="resolve-action" class="btn btn-success btn-sm">Resolve Action</button>
@@ -34,21 +33,25 @@
     <div id="player1-area" class="player-area">
         <h3 class="player-name" id="player1-name"></h3>
         <p>Affiliation: <span class="affiliation" id="aff1">0</span></p>
+        <p class="deck-info">Deck: <span id="deck1-count">0</span> | Discard: <span id="discard1-count">0</span></p>
         <div class="hand" id="hand1"></div>
     </div>
     <div id="player2-area" class="player-area">
         <h3 class="player-name" id="player2-name"></h3>
         <p>Affiliation: <span class="affiliation" id="aff2">0</span></p>
+        <p class="deck-info">Deck: <span id="deck2-count">0</span> | Discard: <span id="discard2-count">0</span></p>
         <div class="hand" id="hand2"></div>
     </div>
     <div id="player3-area" class="player-area">
         <h3 class="player-name" id="player3-name"></h3>
         <p>Affiliation: <span class="affiliation" id="aff3">0</span></p>
+        <p class="deck-info">Deck: <span id="deck3-count">0</span> | Discard: <span id="discard3-count">0</span></p>
         <div class="hand" id="hand3"></div>
     </div>
     <div id="player4-area" class="player-area">
         <h3 class="player-name" id="player4-name"></h3>
         <p>Affiliation: <span class="affiliation" id="aff4">0</span></p>
+        <p class="deck-info">Deck: <span id="deck4-count">0</span> | Discard: <span id="discard4-count">0</span></p>
         <div class="hand" id="hand4"></div>
     </div>
     <div id="center-area" class="text-center">

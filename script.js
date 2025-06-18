@@ -99,7 +99,14 @@ function updateTurnInfo(){
     document.getElementById('actions-left').textContent = actionsLeft;
     players.forEach((p, idx)=>{
         document.getElementById('aff'+(idx+1)).textContent = p.affiliation;
+        updatePlayerDeckInfo(idx);
     });
+}
+
+function updatePlayerDeckInfo(idx){
+    const p = players[idx];
+    document.getElementById('deck'+(idx+1)+'-count').textContent = p.deck.length;
+    document.getElementById('discard'+(idx+1)+'-count').textContent = p.discard.length;
 }
 
 function nextPlayer(){
@@ -139,11 +146,13 @@ function drawFromPlayerDeck(index){
         p.deck = p.discard;
         shuffle(p.deck);
         p.discard = [];
+        updatePlayerDeckInfo(index);
     }
     const card = p.deck.pop();
     p.hand.push(card);
     const area = handAreas[index];
     area.appendChild(createCardElement(card));
+    updatePlayerDeckInfo(index);
 }
 
 function renderMapTray(){
@@ -357,6 +366,7 @@ document.addEventListener('DOMContentLoaded',()=>{
                 area.querySelector('.player-name').textContent = nameInput;
                 handAreas.push(area.querySelector('.hand'));
                 area.querySelector('.affiliation').textContent = '0';
+                updatePlayerDeckInfo(players.length-1);
             } else {
                 area.style.display = 'none';
             }
