@@ -25,11 +25,21 @@ function showMessage(text){
     toast.show();
 }
 
+function showInstruction(text){
+    const el = document.getElementById('prompt-instruction');
+    if(el) el.textContent = text;
+}
+
+function clearInstruction(){
+    showInstruction('');
+}
+
 async function showConfirmUI(message){
     return new Promise(resolve=>{
         const modalEl = document.getElementById('prompt-modal');
         document.getElementById('prompt-title').textContent = 'Confirm';
         document.getElementById('prompt-body').textContent = message;
+        showInstruction(message);
         const footer = document.getElementById('prompt-footer');
         footer.innerHTML = '';
         const noBtn = document.createElement('button');
@@ -37,6 +47,7 @@ async function showConfirmUI(message){
         noBtn.textContent = 'No';
         noBtn.addEventListener('click',()=>{
             bootstrap.Modal.getInstance(modalEl).hide();
+            clearInstruction();
             resolve(false);
         });
         const yesBtn = document.createElement('button');
@@ -44,6 +55,7 @@ async function showConfirmUI(message){
         yesBtn.textContent = 'Yes';
         yesBtn.addEventListener('click',()=>{
             bootstrap.Modal.getInstance(modalEl).hide();
+            clearInstruction();
             resolve(true);
         });
         footer.appendChild(noBtn);
@@ -59,6 +71,7 @@ async function showCardSelectionUI(title, cards){
         document.getElementById('prompt-title').textContent = title;
         const body = document.getElementById('prompt-body');
         body.innerHTML = '';
+        showInstruction(title);
         cards.forEach((c, idx)=>{
             const div = document.createElement('div');
             const chk = document.createElement('input');
@@ -78,6 +91,7 @@ async function showCardSelectionUI(title, cards){
         cancelBtn.textContent = 'Cancel';
         cancelBtn.addEventListener('click',()=>{
             bootstrap.Modal.getInstance(modalEl).hide();
+            clearInstruction();
             resolve(null);
         });
         const okBtn = document.createElement('button');
@@ -89,6 +103,7 @@ async function showCardSelectionUI(title, cards){
                 if(document.getElementById('sel'+idx).checked) selected.push(idx);
             });
             bootstrap.Modal.getInstance(modalEl).hide();
+            clearInstruction();
             resolve(selected);
         });
         footer.appendChild(cancelBtn);
