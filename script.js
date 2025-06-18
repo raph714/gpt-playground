@@ -273,7 +273,9 @@ const effectHandlers = {
     pass_left:(e)=>enqueueAction(e.text,()=>alert(e.text)),
     trade_cards_affiliation:(e)=>enqueueAction(e.text,()=>alert(e.text)),
     trade_cards_with_players:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    each_gain_affiliation:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    each_gain_affiliation:(e)=>enqueueAction(e.text,()=>{
+        players.forEach((p,idx)=>changeAffiliation(idx,1));
+    }),
     advance_detection_all_gain_distraction:(e)=>enqueueAction(e.text,()=>alert(e.text)),
     advance_detection_and_choice_on_discard:(e)=>enqueueAction(e.text,()=>alert(e.text)),
     sacrifice_item_reduce_detection:(e)=>enqueueAction(e.text,()=>alert(e.text)),
@@ -293,6 +295,33 @@ function askPlayersToPay(cost){
     for(let i=0;i<players.length;i++){
         const idx = (currentPlayerIndex + i) % players.length;
         if(confirm(`${players[idx].name}: Pay cost "${cost}"?`)){
+            const p = players[idx];
+            if(p.hand.length===0){
+                alert('No cards to use for payment.');
+                continue;
+            }
+            const handList = p.hand.map((c,hi)=>`${hi+1}: ${c.name}`).join('\n');
+            const sel = prompt(`Select cards to discard to pay cost:\n${handList}`);
+            if(sel===null) continue;
+            const indices = sel.split(/[^\d]+/).map(n=>parseInt(n,10)-1).filter(n=>!isNaN(n));
+            let totalAP = 0;
+            indices.forEach(id=>{
+                const card = p.hand[id];
+                if(card) totalAP += getActionPointCost(card.cost || getCardText(card));
+            });
+            if(totalAP > actionsLeft){
+                alert('Not enough action points for selected cards.');
+                continue;
+            }
+            indices.sort((a,b)=>b-a).forEach(id=>{
+                const card = p.hand.splice(id,1)[0];
+                const area = handAreas[idx];
+                if(area.children[id]) area.children[id].remove();
+                p.discard.push(card);
+                actionsLeft -= getActionPointCost(card.cost || getCardText(card));
+            });
+            updatePlayerDeckInfo(idx);
+            updateTurnInfo();
             return idx;
         }
     }
