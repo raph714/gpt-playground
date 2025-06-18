@@ -197,16 +197,13 @@ async function playSelectedCards(playerIdx) {
     // Calculate total action point cost
     let totalCost = 0;
     const cardsToPlay = [];
-    const elementsToRemove = [];
-
+    
     selectedElements.forEach(element => {
-        const player = players[playerIdx];
         const cardIndex = Array.from(area.children).indexOf(element);
-        const card = player.hand[cardIndex];
+        const card = players[playerIdx].hand[cardIndex];
         if(card) {
             totalCost += getActionPointCost(card.cost || '');
-            cardsToPlay.push({card, element});
-            elementsToRemove.push({element, cardIndex});
+            cardsToPlay.push({card, element, cardIndex});
         }
     });
 
@@ -216,20 +213,32 @@ async function playSelectedCards(playerIdx) {
     }
 
     // Play all cards
-    for(const {card, element} of cardsToPlay) {
+    for(const {card, element, cardIndex} of cardsToPlay) {
+        // Deduct action points
         actionsLeft -= getActionPointCost(card.cost || '');
         updateTurnInfo();
 
         const player = players[playerIdx];
-        const cardIndex = player.hand.indexOf(card);
-        if(cardIndex !== -1) player.hand.splice(cardIndex, 1);
+        // Remove card from hand
+        player.hand.splice(cardIndex, 1);
         element.remove();
+        // Add to discard pile
         player.discard.push(card);
 
         // Apply card effects
         const effects = card.effects || (card.desc.split('<br>').map(text => ({ id: 'custom', text })));
         for(const effect of effects) {
             await runEffect(effect, playerIdx);
+            // Wait for each effect to resolve before moving to next one
+            if(currentAction) {
+                await new Promise(resolve => {
+                    const originalNextAction = nextAction;
+                    nextAction = () => {
+                        originalNextAction();
+                        resolve();
+                    };
+                });
+            }
         }
     }
 
