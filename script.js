@@ -180,24 +180,35 @@ function createHandCardElement(card, playerIdx){
 }
 
 function playHandCard(playerIdx, card, element){
-    if(playerIdx !== currentPlayerIndex) return;
-    if(turnPhase !== 'playerActions') return;
+    if(playerIdx !== currentPlayerIndex) return; // Ensure it's the current player's turn
+    if(turnPhase !== 'playerActions') return; // Ensure the player is in the correct phase
+
     const cost = getActionPointCost(card.cost || '');
     if(cost > actionsLeft){
         showMessage('Not enough action points!');
         return;
     }
-    actionsLeft -= cost;
+
+    actionsLeft -= cost; // Deduct action points
     updateTurnInfo();
-    const p = players[playerIdx];
-    const idx = p.hand.indexOf(card);
-    if(idx !== -1) p.hand.splice(idx,1);
-    element.remove();
-    p.discard.push(card);
+
+    const player = players[playerIdx];
+    const cardIndex = player.hand.indexOf(card);
+    if(cardIndex !== -1) player.hand.splice(cardIndex, 1); // Remove card from hand
+    element.remove(); // Remove card from UI
+    player.discard.push(card); // Add card to discard pile
     updatePlayerDeckInfo(playerIdx);
-    parseMapEffects(card);
-    turnPhase = 'resolveMap';
-    nextAction();
+
+    // Apply card effects
+    const effects = card.effects || (card.desc.split('<br>').map(text => ({ id: 'custom', text })));
+    effects.forEach(effect => runEffect(effect, playerIdx));
+
+    // Check if the turn should proceed to the next phase
+    if(actionsLeft <= 0){
+        showMessage('No actions left! End your turn.');
+        turnPhase = 'resolveMap';
+        nextAction();
+    }
 }
 
 function loadDeck(file, target){
