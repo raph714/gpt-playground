@@ -6,7 +6,7 @@ import { EffectManager } from './effects.js';
 export class DeckManager {
     static async loadDecks() {
         const loadDeck = async (file, target) => {
-            const response = await fetch(`/${file}`);
+            const response = await fetch(`..//${file}`);
             const deck = await response.json();
             CardUtils.shuffle(deck);
             DeckState[target] = deck;
