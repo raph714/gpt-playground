@@ -28,6 +28,11 @@ body {
     justify-content: space-between;
 }
 
+.game-card.selected {
+    border-color: #007bff;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+
 .game-card-title {
     font-weight: bold;
     text-align: center;

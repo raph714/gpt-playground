@@ -176,7 +176,11 @@ function createHandCardElement(card, playerIdx){
     const div = createCardElement(card);
     div.classList.add('selectable');
     div.addEventListener('click', () => {
-        playHandCard(playerIdx, card, div);
+        if (!div.classList.contains('selected')) {
+            div.classList.add('selected');
+        } else {
+            div.classList.remove('selected');
+        }
     });
     return div;
 }
