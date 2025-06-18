@@ -175,7 +175,9 @@ function getActionPointCost(cost){
 function createHandCardElement(card, playerIdx){
     const div = createCardElement(card);
     div.classList.add('selectable');
-    div.addEventListener('click', () => playHandCard(playerIdx, card, div));
+    div.addEventListener('click', () => {
+        playHandCard(playerIdx, card, div);
+    });
     return div;
 }
 
