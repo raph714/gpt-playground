@@ -70,6 +70,40 @@ function getCardText(card){
     return parts.join(' ');
 }
 
+function getActionPointCost(cost){
+    if(!cost) return 0;
+    const m = cost.match(/(\d+)\s*Action/i);
+    return m ? parseInt(m[1],10) : 0;
+}
+
+function createHandCardElement(card, playerIdx){
+    const div = createCardElement(card);
+    div.classList.add('selectable');
+    div.addEventListener('click', () => playHandCard(playerIdx, card, div));
+    return div;
+}
+
+function playHandCard(playerIdx, card, element){
+    if(playerIdx !== currentPlayerIndex) return;
+    if(turnPhase !== 'playerActions') return;
+    const cost = getActionPointCost(card.cost || '');
+    if(cost > actionsLeft){
+        alert('Not enough action points!');
+        return;
+    }
+    actionsLeft -= cost;
+    updateTurnInfo();
+    const p = players[playerIdx];
+    const idx = p.hand.indexOf(card);
+    if(idx !== -1) p.hand.splice(idx,1);
+    element.remove();
+    p.discard.push(card);
+    updatePlayerDeckInfo(playerIdx);
+    parseMapEffects(card);
+    turnPhase = 'resolveMap';
+    nextAction();
+}
+
 function loadDeck(file, target){
     fetch(file).then(r=>r.json()).then(deck=>{
         shuffle(deck);
@@ -128,7 +162,7 @@ function drawCard(deck,name){
     }
     const card = deck.pop();
     const area = handAreas[currentPlayerIndex];
-    area.appendChild(createCardElement(card));
+    area.appendChild(createHandCardElement(card, currentPlayerIndex));
     updateCount(name, deck.length);
 
     const match = getCardText(card).match(/(-?\d+)\s*Detection/i);
@@ -151,7 +185,7 @@ function drawFromPlayerDeck(index){
     const card = p.deck.pop();
     p.hand.push(card);
     const area = handAreas[index];
-    area.appendChild(createCardElement(card));
+    area.appendChild(createHandCardElement(card, index));
     updatePlayerDeckInfo(index);
 }
 
