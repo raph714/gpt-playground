@@ -18,11 +18,11 @@ let currentAction = null;
 let turnPhase = 'chooseMap';
 
 function showMessage(text){
-    const toastEl = document.getElementById('message-toast');
-    if(!toastEl) return; // no UI element available
-    document.getElementById('toast-message').textContent = text;
-    const toast = bootstrap.Toast.getOrCreateInstance(toastEl);
-    toast.show();
+    const msgEl = document.getElementById('game-messages');
+    if(!msgEl) return; // no UI element available
+    const div = document.createElement('div');
+    div.textContent = text;
+    msgEl.appendChild(div);
 }
 
 function showInstruction(text){
