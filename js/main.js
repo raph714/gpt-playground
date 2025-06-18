@@ -8,17 +8,29 @@ import { MapManager } from './map-manager.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
+        debugger; // This will pause execution in dev tools
         console.log('Starting game initialization...');
         UI.clearMessages(); // Clear any previous messages
+        UI.showMessage('Game initialization starting...'); // Test message display
 
         // Load game decks first and wait for them to complete
         UI.showMessage('Loading game decks...');
+        console.log('About to call DeckManager.loadDecks()');
         await DeckManager.loadDecks();
+        console.log('Finished loading decks');
 
         // Verify all decks were loaded
+        const deckStatus = {
+            map: DeckState.mapDeck?.length || 0,
+            people: DeckState.peopleDeck?.length || 0,
+            items: DeckState.itemsDeck?.length || 0,
+            actions: DeckState.actionsDeck?.length || 0
+        };
+        console.log('Deck loading status:', deckStatus);
+
         if (!DeckState.mapDeck.length && !DeckState.peopleDeck.length && 
             !DeckState.itemsDeck.length && !DeckState.actionsDeck.length) {
-            UI.showMessage('Error: Failed to load any game decks. Please check console for details.', true);
+            UI.showMessage('Error: Failed to load any game decks. Check console for details.', true);
             return;
         }
 

@@ -16,10 +16,19 @@ export class UI {
 
     static showMessage(text, isError = false) {
         const msgEl = document.getElementById('game-messages');
-        if (!msgEl) return;
+        if(!msgEl) {
+            console.error('Could not find game-messages element');
+            return;
+        }
+        msgEl.style.display = 'block'; // Ensure message container is visible
         const div = document.createElement('div');
         div.textContent = text;
-        if (isError) div.style.color = '#dc3545'; // Bootstrap danger color
+        if (isError) {
+            div.style.color = '#dc3545'; // Bootstrap danger color
+            console.error('Game Error:', text); // Also log errors to console
+        } else {
+            console.log('Game Message:', text); // Log regular messages too
+        }
         msgEl.appendChild(div);
         // Auto-scroll to bottom
         msgEl.scrollTop = msgEl.scrollHeight;

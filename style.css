@@ -125,6 +125,22 @@ button {
     margin-bottom: 4px;
 }
 
+#game-messages {
+    display: block !important;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px 0;
+    max-height: 200px;
+    overflow-y: auto;
+    background: #fff;
+}
+
 #game-messages div {
     margin-bottom: 4px;
+    padding: 4px;
+    border-bottom: 1px solid #eee;
+}
+
+#game-messages div:last-child {
+    border-bottom: none;
 }
