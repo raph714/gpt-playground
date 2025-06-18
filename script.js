@@ -25,6 +25,94 @@ function showMessage(text){
     toast.show();
 }
 
+function showInstruction(text){
+    const el = document.getElementById('prompt-instruction');
+    if(el) el.textContent = text;
+}
+
+function clearInstruction(){
+    showInstruction('');
+}
+
+async function showConfirmUI(message){
+    return new Promise(resolve=>{
+        const modalEl = document.getElementById('prompt-modal');
+        document.getElementById('prompt-title').textContent = 'Confirm';
+        document.getElementById('prompt-body').textContent = message;
+        showInstruction(message);
+        const footer = document.getElementById('prompt-footer');
+        footer.innerHTML = '';
+        const noBtn = document.createElement('button');
+        noBtn.className = 'btn btn-secondary';
+        noBtn.textContent = 'No';
+        noBtn.addEventListener('click',()=>{
+            bootstrap.Modal.getInstance(modalEl).hide();
+            clearInstruction();
+            resolve(false);
+        });
+        const yesBtn = document.createElement('button');
+        yesBtn.className = 'btn btn-primary';
+        yesBtn.textContent = 'Yes';
+        yesBtn.addEventListener('click',()=>{
+            bootstrap.Modal.getInstance(modalEl).hide();
+            clearInstruction();
+            resolve(true);
+        });
+        footer.appendChild(noBtn);
+        footer.appendChild(yesBtn);
+        const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+        modal.show();
+    });
+}
+
+async function showCardSelectionUI(title, cards){
+    return new Promise(resolve=>{
+        const modalEl = document.getElementById('prompt-modal');
+        document.getElementById('prompt-title').textContent = title;
+        const body = document.getElementById('prompt-body');
+        body.innerHTML = '';
+        showInstruction(title);
+        cards.forEach((c, idx)=>{
+            const div = document.createElement('div');
+            const chk = document.createElement('input');
+            chk.type = 'checkbox';
+            chk.id = 'sel'+idx;
+            const label = document.createElement('label');
+            label.setAttribute('for','sel'+idx);
+            label.textContent = `${idx+1}: ${c.name}`;
+            div.appendChild(chk);
+            div.appendChild(label);
+            body.appendChild(div);
+        });
+        const footer = document.getElementById('prompt-footer');
+        footer.innerHTML = '';
+        const cancelBtn = document.createElement('button');
+        cancelBtn.className = 'btn btn-secondary';
+        cancelBtn.textContent = 'Cancel';
+        cancelBtn.addEventListener('click',()=>{
+            bootstrap.Modal.getInstance(modalEl).hide();
+            clearInstruction();
+            resolve(null);
+        });
+        const okBtn = document.createElement('button');
+        okBtn.className = 'btn btn-primary';
+        okBtn.textContent = 'Confirm';
+        okBtn.addEventListener('click',()=>{
+            const selected = [];
+            cards.forEach((_, idx)=>{
+                if(document.getElementById('sel'+idx).checked) selected.push(idx);
+            });
+            bootstrap.Modal.getInstance(modalEl).hide();
+            clearInstruction();
+            resolve(selected);
+        });
+        footer.appendChild(cancelBtn);
+        footer.appendChild(okBtn);
+        const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+        modal.show();
+    });
+}
+
 function shuffle(arr){
     for(let i=arr.length-1;i>0;i--){
         const j=Math.floor(Math.random()*(i+1));
@@ -299,21 +387,20 @@ function runEffect(effect, playerIdx){
     handler(effect, playerIdx);
 }
 
-function askPlayersToPay(cost){
+async function askPlayersToPay(cost){
     for(let i=0;i<players.length;i++){
         const idx = (currentPlayerIndex + i) % players.length;
-        if(confirm(`${players[idx].name}: Pay cost "${cost}"?`)){
+        const pay = await showConfirmUI(`${players[idx].name}: Pay cost "${cost}"?`);
+        if(pay){
             const p = players[idx];
             if(p.hand.length===0){
                 showMessage('No cards to use for payment.');
                 continue;
             }
-            const handList = p.hand.map((c,hi)=>`${hi+1}: ${c.name}`).join('\n');
-            const sel = prompt(`Select cards to discard to pay cost:\n${handList}`);
-            if(sel===null) continue;
-            const indices = sel.split(/[^\d]+/).map(n=>parseInt(n,10)-1).filter(n=>!isNaN(n));
+            const selection = await showCardSelectionUI('Select cards to discard to pay cost', p.hand);
+            if(selection === null) continue;
             let totalAP = 0;
-            indices.forEach(id=>{
+            selection.forEach(id=>{
                 const card = p.hand[id];
                 if(card) totalAP += getActionPointCost(card.cost || getCardText(card));
             });
@@ -321,7 +408,7 @@ function askPlayersToPay(cost){
                 showMessage('Not enough action points for selected cards.');
                 continue;
             }
-            indices.sort((a,b)=>b-a).forEach(id=>{
+            selection.sort((a,b)=>b-a).forEach(id=>{
                 const card = p.hand.splice(id,1)[0];
                 const area = handAreas[idx];
                 if(area.children[id]) area.children[id].remove();
@@ -336,12 +423,12 @@ function askPlayersToPay(cost){
     return null;
 }
 
-function handlePersonCard(card){
+async function handlePersonCard(card){
     const avoidCost = card.avoid && card.avoid.cost ? card.avoid.cost.trim() : '';
     const avoidEffects = (card.avoid && card.avoid.effects) ? card.avoid.effects : [];
     let avoidIdx = null;
     if(avoidCost){
-        avoidIdx = askPlayersToPay(avoidCost);
+        avoidIdx = await askPlayersToPay(avoidCost);
     }
     if(avoidIdx === null){
         avoidEffects.forEach(e=>runEffect(e, currentPlayerIndex));
@@ -351,7 +438,7 @@ function handlePersonCard(card){
     const rewardEffects = (card.reward && card.reward.effects) ? card.reward.effects : [];
     let rewardIdx = null;
     if(rewardCost){
-        rewardIdx = askPlayersToPay(rewardCost);
+        rewardIdx = await askPlayersToPay(rewardCost);
     }
     if(rewardIdx !== null){
         rewardEffects.forEach(e=>runEffect(e, rewardIdx));
@@ -371,7 +458,7 @@ function nextAction(){
     document.getElementById('action-info').style.display='block';
 }
 
-function flipPerson(count){
+async function flipPerson(count){
     for(let c=0;c<count;c++){
         if(peopleDeck.length===0) return;
         const card = peopleDeck.pop();
@@ -383,7 +470,7 @@ function flipPerson(count){
                 break;
             }
         }
-        handlePersonCard(card);
+        await handlePersonCard(card);
     }
 }
 
@@ -394,10 +481,11 @@ function changeAffiliation(idx, amt){
     updateTurnInfo();
 }
 
-function drawOrAffiliation(){
-    if(confirm('OK = Draw 1 card, Cancel = Gain 1 Affiliation')){
+async function drawOrAffiliation(){
+    const chooseDraw = await showConfirmUI('Draw 1 card? (No = Gain 1 Affiliation)');
+    if(chooseDraw){
         drawFromPlayerDeck(currentPlayerIndex);
-    }else{
+    } else {
         changeAffiliation(currentPlayerIndex,1);
     }
 }
@@ -463,9 +551,9 @@ document.addEventListener('DOMContentLoaded',()=>{
         if(turnPhase==='resolveMap') return;
         nextPlayer();
     });
-    document.getElementById('resolve-action').addEventListener('click',()=>{
+    document.getElementById('resolve-action').addEventListener('click',async ()=>{
         if(currentAction){
-            currentAction.fn();
+            await currentAction.fn();
         }
         nextAction();
     });
