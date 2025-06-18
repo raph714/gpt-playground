@@ -12,8 +12,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         await GameManager.loadDecks();
 
         // Load rules
-        const basePath = window.location.pathname.includes('/gpt-playground') ? '/gpt-playground/' : '/';
-        const rulesResponse = await fetch(basePath + 'rules.txt');
+        const rulesResponse = await fetch('../rules.txt');
         const rulesText = await rulesResponse.text();
         document.getElementById('rules-text').textContent = rulesText;
 

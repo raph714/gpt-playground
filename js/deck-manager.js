@@ -7,9 +7,7 @@ export class DeckManager {
     static async loadDecks() {
         const loadDeck = async (file, target) => {
             try {
-                // Get the base URL from the current path
-                const basePath = window.location.pathname.includes('/gpt-playground') ? '/gpt-playground/' : '/';
-                const response = await fetch(basePath + file);
+                const response = await fetch('../' + file);
                 const deck = await response.json();
                 CardUtils.shuffle(deck);
                 DeckState[target] = deck;
