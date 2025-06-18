@@ -7,7 +7,8 @@ export class DeckManager {
     static async loadDecks() {
         const loadDeck = async (file, target) => {
             try {
-                const response = await fetch('../' + file);
+                // Paths are relative to index.html location
+                const response = await fetch(file);
                 const deck = await response.json();
                 CardUtils.shuffle(deck);
                 DeckState[target] = deck;

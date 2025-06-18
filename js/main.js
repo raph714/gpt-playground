@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Load game decks
         await GameManager.loadDecks();
 
-        // Load rules
-        const rulesResponse = await fetch('../rules.txt');
+        // Load rules (relative to index.html location)
+        const rulesResponse = await fetch('rules.txt');
         const rulesText = await rulesResponse.text();
         document.getElementById('rules-text').textContent = rulesText;
 
