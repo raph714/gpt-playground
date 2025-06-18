@@ -119,3 +119,7 @@ button {
 .effect {
     margin-bottom: 4px;
 }
+
+#game-messages div {
+    margin-bottom: 4px;
+}

@@ -29,6 +29,7 @@
         <button id="resolve-action" class="btn btn-success btn-sm">Resolve Action</button>
     </div>
     <button id="end-turn" class="btn btn-secondary">End Turn</button>
+    <div id="game-messages" class="text-danger my-2"></div>
 </section>
 <div id="board" style="display:none;" class="mb-3">
     <div id="player1-area" class="player-area">
@@ -91,11 +92,6 @@
 <h2>Rules</h2>
 <pre id="rules-text"></pre>
 </section>
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-      <div id="message-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-body" id="toast-message"></div>
-      </div>
-    </div>
     <div class="modal fade" id="prompt-modal" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
