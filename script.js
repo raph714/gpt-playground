@@ -17,6 +17,14 @@ let actionQueue = [];
 let currentAction = null;
 let turnPhase = 'chooseMap';
 
+function showMessage(text){
+    const toastEl = document.getElementById('message-toast');
+    if(!toastEl) return; // no UI element available
+    document.getElementById('toast-message').textContent = text;
+    const toast = bootstrap.Toast.getOrCreateInstance(toastEl);
+    toast.show();
+}
+
 function shuffle(arr){
     for(let i=arr.length-1;i>0;i--){
         const j=Math.floor(Math.random()*(i+1));
@@ -88,7 +96,7 @@ function playHandCard(playerIdx, card, element){
     if(turnPhase !== 'playerActions') return;
     const cost = getActionPointCost(card.cost || '');
     if(cost > actionsLeft){
-        alert('Not enough action points!');
+        showMessage('Not enough action points!');
         return;
     }
     actionsLeft -= cost;
@@ -123,7 +131,7 @@ function adjustDetection(delta){
     if(detection < 0) detection = 0;
     document.getElementById('detection-value').textContent = detection;
     if(detection >= 10){
-        alert('Detection reached 10! Game over.');
+        showMessage('Detection reached 10! Game over.');
     }
 }
 
@@ -157,7 +165,7 @@ function drawCard(deck,name){
     if(deck.length===0) return;
     if(turnPhase !== 'playerActions') return;
     if(actionsLeft <= 0){
-        alert('No actions left! End your turn.');
+        showMessage('No actions left! End your turn.');
         return;
     }
     const card = deck.pop();
@@ -236,54 +244,54 @@ const effectHandlers = {
     affiliation:(e,idx)=>enqueueAction(e.text,()=>changeAffiliation(idx,e.amount)),
     draw:(e,idx)=>enqueueAction(e.text,()=>{for(let i=0;i<e.amount;i++) drawFromPlayerDeck(idx);}),
     gain_action_point:(e)=>enqueueAction(e.text,()=>{actionsLeft += e.amount; updateTurnInfo();}),
-    scry:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    scry:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
     flip:(e)=>enqueueAction(e.text,()=>flipPerson(e.amount)),
     draw_or_affiliation:()=>enqueueAction('Draw 1 card or gain 1 affiliation',()=>drawOrAffiliation()),
-    gain_distraction:(e,idx)=>enqueueAction(e.text,()=>alert(`${players[idx].name} gains ${e.amount} Distraction`)),
-    gain_intimidation:(e,idx)=>enqueueAction(e.text,()=>alert(`${players[idx].name} gains ${e.amount} Intimidation`)),
-    gain_deception:(e,idx)=>enqueueAction(e.text,()=>alert(`${players[idx].name} gains ${e.amount} Deception`)),
-    gain_bribery:(e,idx)=>enqueueAction(e.text,()=>alert(`${players[idx].name} gains ${e.amount} Bribery`)),
-    gain_distraction_or_intimidation:(e,idx)=>enqueueAction(e.text,()=>alert(e.text)),
+    gain_distraction:(e,idx)=>enqueueAction(e.text,()=>showMessage(`${players[idx].name} gains ${e.amount} Distraction`)),
+    gain_intimidation:(e,idx)=>enqueueAction(e.text,()=>showMessage(`${players[idx].name} gains ${e.amount} Intimidation`)),
+    gain_deception:(e,idx)=>enqueueAction(e.text,()=>showMessage(`${players[idx].name} gains ${e.amount} Deception`)),
+    gain_bribery:(e,idx)=>enqueueAction(e.text,()=>showMessage(`${players[idx].name} gains ${e.amount} Bribery`)),
+    gain_distraction_or_intimidation:(e,idx)=>enqueueAction(e.text,()=>showMessage(e.text)),
     gain_two_affiliation:(e,idx)=>enqueueAction(e.text,()=>changeAffiliation(idx,2)),
-    least_affiliation_gain:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    most_affiliation_draw:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    ignore_person_requirements:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    trigger_person_effect:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    trigger_map_card_effect:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    reduce_detection_draw_person:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    play_action_from_evidence:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    play_item_from_evidence:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    recover_from_discard:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    return_evidence:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    drop_item_draw_two:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    target_draw:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    bump_and_choice:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    discard_then_draw_all:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    discard_all:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    witness_penalty_discard:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    discard_item_optional_draw:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    discard_on_affiliation_reduce_detection:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    discard_reduce_detection_on_item_play:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    draw_then_discard_on_affiliation:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    pay_affiliation_reduce_detection_on_item_play:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    pay_affiliation_reduce_detection_on_ally:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    peek_item_into_hand:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    bottom_map_card:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    shuffle_evidence:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    pass_left:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    trade_cards_affiliation:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    trade_cards_with_players:(e)=>enqueueAction(e.text,()=>alert(e.text)),
+    least_affiliation_gain:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    most_affiliation_draw:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    ignore_person_requirements:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    trigger_person_effect:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    trigger_map_card_effect:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    reduce_detection_draw_person:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    play_action_from_evidence:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    play_item_from_evidence:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    recover_from_discard:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    return_evidence:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    drop_item_draw_two:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    target_draw:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    bump_and_choice:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    discard_then_draw_all:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    discard_all:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    witness_penalty_discard:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    discard_item_optional_draw:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    discard_on_affiliation_reduce_detection:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    discard_reduce_detection_on_item_play:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    draw_then_discard_on_affiliation:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    pay_affiliation_reduce_detection_on_item_play:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    pay_affiliation_reduce_detection_on_ally:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    peek_item_into_hand:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    bottom_map_card:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    shuffle_evidence:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    pass_left:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    trade_cards_affiliation:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    trade_cards_with_players:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
     each_gain_affiliation:(e)=>enqueueAction(e.text,()=>{
         players.forEach((p,idx)=>changeAffiliation(idx,1));
     }),
-    advance_detection_all_gain_distraction:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    advance_detection_and_choice_on_discard:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    sacrifice_item_reduce_detection:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    sacrifice_top_to_evidence_reduce_detection:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    draw_on_item_play:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    target_draw_aff:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    turn_ally:(e)=>enqueueAction(e.text,()=>alert(e.text)),
-    default:(e)=>enqueueAction(e.text,()=>alert(e.text))
+    advance_detection_all_gain_distraction:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    advance_detection_and_choice_on_discard:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    sacrifice_item_reduce_detection:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    sacrifice_top_to_evidence_reduce_detection:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    draw_on_item_play:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    target_draw_aff:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    turn_ally:(e)=>enqueueAction(e.text,()=>showMessage(e.text)),
+    default:(e)=>enqueueAction(e.text,()=>showMessage(e.text))
 };
 
 function runEffect(effect, playerIdx){
@@ -297,7 +305,7 @@ function askPlayersToPay(cost){
         if(confirm(`${players[idx].name}: Pay cost "${cost}"?`)){
             const p = players[idx];
             if(p.hand.length===0){
-                alert('No cards to use for payment.');
+                showMessage('No cards to use for payment.');
                 continue;
             }
             const handList = p.hand.map((c,hi)=>`${hi+1}: ${c.name}`).join('\n');
@@ -310,7 +318,7 @@ function askPlayersToPay(cost){
                 if(card) totalAP += getActionPointCost(card.cost || getCardText(card));
             });
             if(totalAP > actionsLeft){
-                alert('Not enough action points for selected cards.');
+                showMessage('Not enough action points for selected cards.');
                 continue;
             }
             indices.sort((a,b)=>b-a).forEach(id=>{
@@ -435,7 +443,7 @@ document.addEventListener('DOMContentLoaded',()=>{
             }
         }
         if(players.length === 0){
-            alert('Enter at least one player');
+            showMessage('Enter at least one player');
             return;
         }
         document.getElementById('setup').style.display='none';
