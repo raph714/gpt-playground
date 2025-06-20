@@ -1,4 +1,5 @@
-import { GameState, GamePhase, GameConfig, DeckState, startingDeck, Player } from './config.js';
+import { GameState, GamePhase, GameConfig, DeckState, startingDeck } from './config.js';
+import { Player } from './config.js'; // Correctly import Player
 import { UI } from './ui.js';
 import { CardUtils } from './cards.js';
 import { DeckManager } from './deck-manager.js';
@@ -7,18 +8,6 @@ import { MapManager } from './map-manager.js';
 export class GameManager {
     static async loadDecks() {
         await DeckManager.loadDecks();
-    }
-
-    static initializePlayer(name) {
-        const deck = structuredClone(startingDeck);
-        CardUtils.shuffle(deck);
-        return {
-            name,
-            deck,
-            discard: [],
-            hand: [],
-            affiliation: 0
-        };
     }
 
     static startGame() {
