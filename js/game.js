@@ -1,4 +1,4 @@
-import { GameState, GamePhase, GameConfig, DeckState, startingDeck } from './config.js';
+import { GameState, Player, GamePhase, GameConfig, DeckState, startingDeck } from './config.js';
 import { UI } from './ui.js';
 import { CardUtils } from './cards.js';
 import { DeckManager } from './deck-manager.js';
