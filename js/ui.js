@@ -56,9 +56,16 @@ export class UI {
     }
 
     static updatePlayerInfo(player, idx) {
-        this.setText(`deck${idx+1}-count`, player.deck.length);
-        this.setText(`discard${idx+1}-count`, player.discard.length);
-        this.setText(`aff${idx+1}`, player.affiliation);
+        this.setText(`deck${idx + 1}-count`, player.deck.length);
+        this.setText(`discard${idx + 1}-count`, player.discard.length);
+        this.setText(`aff${idx + 1}`, player.affiliation);
+
+        const handArea = document.getElementById(`hand${idx + 1}`);
+        handArea.innerHTML = ''; // Clear existing hand cards
+        player.hand.forEach(card => {
+            const cardElement = CardUtils.createHandCardElement(card, idx);
+            handArea.appendChild(cardElement);
+        });
     }
 
     static updateTurnInfo() {

@@ -45,11 +45,12 @@ export class GameManager {
         GameState.actionsLeft = GameConfig.STARTING_ACTIONS;
 
         // Draw initial hands
-        GameState.players.forEach(player => {
+        GameState.players.forEach((player, idx) => {
             for (let d = 0; d < GameConfig.STARTING_HAND_SIZE; d++) {
                 const card = player.deck.pop();
                 player.hand.push(card);
             }
+            UI.updatePlayerInfo(player, idx); // Update UI with player's hand
         });
 
         MapManager.fillMapTray();
