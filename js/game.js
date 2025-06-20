@@ -23,19 +23,19 @@ export class GameManager {
 
     static startGame() {
         GameState.players = [];
-        GameState.handAreas = [];
 
         // Initialize players
         for (let i = 1; i <= 4; i++) {
             const nameInput = document.getElementById(`player${i}`).value.trim();
             const area = document.getElementById(`player${i}-area`);
-            
+
             if (nameInput) {
-                const player = this.initializePlayer(nameInput);
+                const player = new Player(nameInput);
+                player.deck = structuredClone(startingDeck);
+                CardUtils.shuffle(player.deck);
                 GameState.players.push(player);
                 area.style.display = 'flex';
                 area.querySelector('.player-name').textContent = nameInput;
-                GameState.handAreas.push(area.querySelector('.hand'));
                 area.querySelector('.affiliation').textContent = '0';
                 UI.updatePlayerInfo(player, GameState.players.length - 1);
             } else {
@@ -54,11 +54,12 @@ export class GameManager {
         UI.show('board');
         GameState.currentPlayerIndex = Math.floor(Math.random() * GameState.players.length);
         GameState.actionsLeft = GameConfig.STARTING_ACTIONS;
-        
+
         // Draw initial hands
-        GameState.players.forEach((_, idx) => {
+        GameState.players.forEach(player => {
             for (let d = 0; d < GameConfig.STARTING_HAND_SIZE; d++) {
-                DeckManager.drawFromPlayerDeck(idx);
+                const card = player.deck.pop();
+                player.hand.push(card);
             }
         });
 

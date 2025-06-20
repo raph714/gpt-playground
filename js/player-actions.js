@@ -7,11 +7,11 @@ export class PlayerActions {
     static async playSelectedCards(playerIdx) {
         if (!this.canPlayCards(playerIdx)) return;
 
-        const area = GameState.handAreas[playerIdx];
-        const selectedElements = area.querySelectorAll('.game-card.selected');
+        const player = GameState.players[playerIdx];
+        const selectedElements = Array.from(document.querySelectorAll(`#player${playerIdx + 1}-area .game-card.selected`));
         if (selectedElements.length === 0) return;
 
-        const {totalCost, cardsToPlay} = this.calculateCardCosts(playerIdx, selectedElements);
+        const { totalCost, cardsToPlay } = this.calculateCardCosts(player, selectedElements);
 
         if (totalCost > GameState.actionsLeft) {
             UI.showMessage('Not enough action points to play selected cards!');
@@ -26,20 +26,20 @@ export class PlayerActions {
                GameState.turnPhase === GamePhase.PLAYER_ACTIONS;
     }
 
-    static calculateCardCosts(playerIdx, selectedElements) {
+    static calculateCardCosts(player, selectedElements) {
         let totalCost = 0;
         const cardsToPlay = [];
-        
+
         selectedElements.forEach(element => {
             const cardIndex = Array.from(element.parentNode.children).indexOf(element);
-            const card = GameState.players[playerIdx].hand[cardIndex];
+            const card = player.hand[cardIndex];
             if (card) {
                 totalCost += CardUtils.getActionPointCost(card.cost || '');
-                cardsToPlay.push({card, element, cardIndex});
+                cardsToPlay.push({ card, element, cardIndex });
             }
         });
 
-        return {totalCost, cardsToPlay};
+        return { totalCost, cardsToPlay };
     }
 
     static async executeCardPlays(playerIdx, cardsToPlay) {
@@ -157,8 +157,6 @@ export class PlayerActions {
     static processPayment(player, playerIdx, selection) {
         selection.sort((a, b) => b - a).forEach(id => {
             const card = player.hand.splice(id, 1)[0];
-            const area = GameState.handAreas[playerIdx];
-            if (area.children[id]) area.children[id].remove();
             player.discard.push(card);
             GameState.actionsLeft -= CardUtils.getActionPointCost(card.cost || CardUtils.getCardText(card));
         });

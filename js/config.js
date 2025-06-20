@@ -13,6 +13,17 @@ export const GameConfig = {
     MAX_MAP_TRAY_SIZE: 3
 };
 
+// Player class
+export class Player {
+    constructor(name) {
+        this.name = name;
+        this.deck = [];
+        this.hand = [];
+        this.discard = [];
+        this.affiliation = 0;
+    }
+}
+
 // Initial game state
 export const GameState = {
     detection: 0,
@@ -20,8 +31,7 @@ export const GameState = {
     actionsLeft: GameConfig.STARTING_ACTIONS,
     turnPhase: GamePhase.CHOOSE_MAP,
     currentAction: null,
-    players: [],
-    handAreas: [],
+    players: [], // Array of Player objects
     actionQueue: []
 };
 

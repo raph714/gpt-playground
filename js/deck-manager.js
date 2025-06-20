@@ -73,8 +73,6 @@ export class DeckManager {
         }
         const card = player.deck.pop();
         player.hand.push(card);
-        const area = GameState.handAreas[index];
-        area.appendChild(CardUtils.createHandCardElement(card, index));
         UI.updatePlayerInfo(player, index);
     }
 
@@ -86,8 +84,8 @@ export class DeckManager {
             return;
         }
         const card = deck.pop();
-        const area = GameState.handAreas[GameState.currentPlayerIndex];
-        area.appendChild(CardUtils.createHandCardElement(card, GameState.currentPlayerIndex));
+        const player = GameState.players[GameState.currentPlayerIndex];
+        player.hand.push(card);
         UI.updateCounter(name, deck.length);
 
         const match = CardUtils.getCardText(card).match(/(-?\d+)\s*Detection/i);

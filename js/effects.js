@@ -13,10 +13,10 @@ export class EffectManager {
         draw: (e, idx) => this.enqueueAction(e.text, () => {
             for (let i = 0; i < e.amount; i++) DeckManager.drawFromPlayerDeck(idx);
         }),
-        each_gain_affiliation: (e) => enqueueAction(e.text, () => {
-            players.forEach((p, idx) => changeAffiliation(idx, 1));
+        each_gain_affiliation: (e, idx) => enqueueAction(e.text, () => {
+            players.forEach((p, i) => changeAffiliation(i, 1));
         }),
-        gain_action_point: (e) => this.enqueueAction(e.text, () => {
+        gain_action_point: (e, idx) => this.enqueueAction(e.text, () => {
             GameState.actionsLeft += e.amount;
             UI.updateTurnInfo();
         }),
@@ -34,6 +34,7 @@ export class EffectManager {
     };
 
     static runEffect(effect, playerIdx) {
+        UI.showMessage(`$effect triggered`);
         const handler = this.handlers[effect.id] || this.handlers.default;
         handler(effect, playerIdx);
     }
