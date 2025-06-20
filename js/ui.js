@@ -1,4 +1,5 @@
 import { GameState } from './config.js';
+import { CardUtils } from './cards.js'; // Import CardUtils
 
 export class UI {
     static show(elementId) {
@@ -16,7 +17,7 @@ export class UI {
 
     static showMessage(text, isError = false) {
         const msgEl = document.getElementById('game-messages');
-        if(!msgEl) {
+        if (!msgEl) {
             console.error('Could not find game-messages element');
             return;
         }
@@ -61,6 +62,11 @@ export class UI {
         this.setText(`aff${idx + 1}`, player.affiliation);
 
         const handArea = document.getElementById(`hand${idx + 1}`);
+        if (!handArea) {
+            console.error(`Hand area for player ${idx + 1} not found`);
+            return;
+        }
+        console.log(`Updating hand for player ${idx + 1}:`, player.hand); // Debugging log
         handArea.innerHTML = ''; // Clear existing hand cards
         player.hand.forEach(card => {
             const cardElement = CardUtils.createHandCardElement(card, idx);
@@ -81,10 +87,10 @@ export class UI {
             this.setText('prompt-title', 'Confirm');
             this.setText('prompt-body', message);
             this.showInstruction(message);
-            
+
             const footer = document.getElementById('prompt-footer');
             footer.innerHTML = '';
-            
+
             const noBtn = document.createElement('button');
             noBtn.className = 'btn btn-secondary';
             noBtn.textContent = 'No';
@@ -93,7 +99,7 @@ export class UI {
                 this.clearInstruction();
                 resolve(false);
             };
-            
+
             const yesBtn = document.createElement('button');
             yesBtn.className = 'btn btn-primary';
             yesBtn.textContent = 'Yes';
@@ -102,7 +108,7 @@ export class UI {
                 this.clearInstruction();
                 resolve(true);
             };
-            
+
             footer.appendChild(noBtn);
             footer.appendChild(yesBtn);
             bootstrap.Modal.getOrCreateInstance(modalEl).show();
@@ -116,7 +122,7 @@ export class UI {
             const body = document.getElementById('prompt-body');
             body.innerHTML = '';
             this.showInstruction(title);
-            
+
             cards.forEach((c, idx) => {
                 const div = document.createElement('div');
                 const chk = document.createElement('input');
@@ -132,7 +138,7 @@ export class UI {
 
             const footer = document.getElementById('prompt-footer');
             footer.innerHTML = '';
-            
+
             const cancelBtn = document.createElement('button');
             cancelBtn.className = 'btn btn-secondary';
             cancelBtn.textContent = 'Cancel';

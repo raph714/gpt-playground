@@ -45,6 +45,7 @@ export class CardUtils {
         div.addEventListener('click', () => {
             div.classList.toggle('selected');
         });
+        console.log(`Created hand card element for player ${playerIdx}:`, div); // Debugging log
         return div;
     }
 

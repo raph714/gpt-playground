@@ -46,11 +46,13 @@ export class GameManager {
 
         // Draw initial hands
         GameState.players.forEach((player, idx) => {
+            console.log(`Initializing hand for player ${player.name}`); // Debugging log
             for (let d = 0; d < GameConfig.STARTING_HAND_SIZE; d++) {
                 const card = player.deck.pop();
                 player.hand.push(card);
             }
-            UI.updatePlayerInfo(player, idx); // Update UI with player's hand
+            console.log(`Player ${player.name} hand after initialization:`, player.hand); // Debugging log
+            UI.updatePlayerInfo(player, idx); // Ensure UI reflects player's hand
         });
 
         MapManager.fillMapTray();
